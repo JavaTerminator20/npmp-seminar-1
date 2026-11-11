@@ -1,0 +1,81 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[slovene]{babel}
+\usepackage[margin=2cm]{geometry}
+\usepackage{enumitem}
+\setlist{nosep, leftmargin=*}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\pagestyle{empty}
+
+\begin{document}
+
+{\large\textbf{Prijava teme seminarske naloge --
+NPMP, kvantni računalniki (QC)}}\\
+Avtor: Matej Mlakar \hfill 
+
+\vspace{4pt}
+\textbf{Naslov:} Vpliv ravni optimizacije prevajalnika Qiskit
+na reverzibilna vezja na šumnem kvantnem procesorju IBM
+
+\textbf{Raziskovalno vprašanje:} Kako vpliva raven optimizacije
+prevajalnika Qiskit (0--3) na število dvokubitnih vrat
+reverzibilnih vezij in kako to vpliva na
+verjetnost pravilnega rezultata na šumnem procesorju IBM?
+
+\textbf{Pričakovani rezultat (hipoteza):}
+\begin{itemize}
+  \item Prehod z ravni 0 na raven 1
+  močno zmanjša število dvokubitnih vrat (za več
+  kot 30\,\%) in opazno izboljša pravilnost.
+  \item Razlika med ravnema 2 in 3 je majhna (manj kot 10\,\% 
+  v številu dvokubitnih vrat in manj kot 3\,\% v pravilnosti).
+\end{itemize}
+
+\textbf{Metrike:}
+\begin{itemize}
+  \item strukturne (pred prevajanjem in po njem):
+  število kubitov, število dvokubitnih vrat, globina vezja,
+  skupno število vrat, čas prevajanja;
+  \item verjetnost pravilnega rezultata $P_{pravilno}$ = delež ponovitev
+  s pravilnim izhodom, povprečen čez vse vhode
+  vezja. Pravilen izhod določimo iz klasične pravilnostne
+  tabele.
+\end{itemize}
+
+\textbf{Načrt poskusov:}
+\begin{enumerate}
+  \item Implementacija reverzibilnih vezij različnih velikosti: Toffolijeva
+  in Fredkinova vrata, polni seštevalnik ter 2-bitni
+  Cuccarov seštevalnik. Vhod pripravimo
+  z vrati X, ločenimi z \texttt{barrier}, da
+  optimizacija ne poseže v pripravo vhoda.
+  \item Prevajanje vsakega vezja na ravneh 0--3
+  z več semeni prevajalnika (\texttt{seed\_transpiler}) in
+  zapis strukturnih metrik. Rezultate čez semena povprečimo.
+  \item Serija A: privzeto prevajanje. Serija B: vse
+  ravni z enako fiksno postavitvijo kubitov (\texttt{initial\_layout}),
+  da ločimo vpliv postavitve od vpliva
+  optimizacije vrat.
+  \item Zagon na idealnem simulatorju (preverjanje pravilnosti,
+  pričakovano 100\,\%) in na simulatorju s šumnim
+  modelom procesorja IBM (vse kombinacije).
+  \item Zagon izbrane podmnožice vezij na pravem procesorju
+  IBM (Open Plan). Zabeležimo oznako procesorja, število
+  ponovitev in ID-je nalog.
+  \item Analiza: primerjava ravni, povezava med številom
+  dvokubitnih vrat in pravilnostjo, grafi in tabele.
+\end{enumerate}
+
+\textbf{Potrebna orodja:} Python 3, Qiskit (prevajalnik,
+\texttt{generate\_preset\_pass\_manager}), Qiskit Aer (idealni in šumni
+simulator), Qiskit IBM Runtime (dostop do procesorja IBM
+in šumni modeli \texttt{FakeBackend}), matplotlib in pandas
+(analiza in grafi), GitHub (repozitorij), \LaTeX{} (poročilo).
+
+\textbf{Razdelitev dela:} Seminarsko nalogo izdelujem sam,
+zato vse dele (vezja, poskuse, analizo in poročilo)
+pripravim sam.
+
+\end{document}

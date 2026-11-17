@@ -1,0 +1,202 @@
+\documentclass[graybox, envcountchap]{svmult}
+
+% --- kodiranje, jezik, pisave -----------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[slovene]{babel}
+\usepackage{mathptmx}          % Times Roman
+\usepackage{helvet}            % Helvetica
+\usepackage{courier}           % Courier
+
+% --- matematika -------------------------------------------------------
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{physics}           % \ket, \bra, \braket, \expval ...
+
+% --- slike, tabele, diagrami ------------------------------------------
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{booktabs}          % \toprule, \midrule, \bottomrule
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage[separate-uncertainty=true]{siunitx}
+\sisetup{output-decimal-marker={,}}
+\usepackage{tikz}
+\usepackage{quantikz}          % kvantna vezja
+
+% --- programska koda --------------------------------------------------
+\usepackage{xcolor}
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{blue!60!black}\bfseries,
+  commentstyle=\color{gray},
+  stringstyle=\color{red!50!black},
+  numbers=left, numberstyle=\tiny\color{gray},
+  frame=single, breaklines=true, columns=fullflexible,
+  showstringspaces=false, captionpos=b
+}
+
+% --- ostalo -----------------------------------------------------------
+\usepackage{multicol}
+\usepackage[bottom]{footmisc}
+\usepackage{comment}
+\usepackage{csquotes}          % \enquote{...}
+\usepackage[numbers,square,sort&compress]{natbib} % številčni sklici [1--3]
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+
+\setlocalecaption{slovene}{theorem}{Izrek}
+\setlocalecaption{slovene}{definition}{Definicija}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Začetek dejanskega poglavja - besedilo pred tem izbrisi pred oddajo
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\graphicspath{{img/}}   % v zborniku: \graphicspath{{Skupina10/img/}}
+
+\title{Vpliv ravni optimizacije prevajalnika Qiskit na reverzibilna vezja na šumnem kvantnem procesorju IBM}
+\titlerunning{Ravni optimizacije Qiskit in reverzibilna vezja}
+\author{Matej Mlakar}
+\maketitle
+
+\abstract{[Povzetek v 5 do 10 vrsticah. Navedite raziskovalno vprašanje, uporabljeno metodo in orodja ter glavni rezultat s konkretno številko (zmanjšanje števila dvokubitnih vrat pri prehodu z ravni 0 na 1 in razlika med ravnema 2 in 3). Končajte z enim stavkom o pomenu rezultata.]}
+
+
+\section{Uvod}
+\label{g10:sec:uvod}
+
+[Kratko predstavite področje (največ dve strani) in ga podprite z viri: reverzibilno procesiranje~\cite{reversible:mraz}, kvantna vrata so unitarna in zato reverzibilna [TODO: vir],današnji šumni procesorji (NISQ)~\cite{preskill2018}, prevajalnik Qiskit~\cite{qiskit2024}. Opišite, kaj so drugi že naredili in kaj ostaja odprto.]
+
+\begin{svgraybox}
+\textbf{Raziskovalno vprašanje.} Kako vpliva raven optimizacije prevajalnika Qiskit (0--3) na število dvokubitnih vrat reverzibilnih vezij in kako to vpliva na verjetnost pravilnega rezultata na šumnem procesorju IBM?
+
+\textbf{Pričakovani rezultat.} Prehod z ravni 0 na raven 1 zmanjša število dvokubitnih vrat za več kot 30~\% in opazno izboljša pravilnost. Razlika med ravnema 2 in 3 je majhna: manj kot 10~\% v številu dvokubitnih vrat in manj kot 3 odstotne točke v pravilnosti.
+\end{svgraybox}
+
+[Na koncu uvoda v nekaj stavkih opišite zgradbo poglavja.]
+
+
+\section{Metode}
+\label{g10:sec:metode}
+
+\subsection{Orodja in nastavitve}
+\label{g10:sec:orodja}
+
+[Navedite orodja z različicami (iz \texttt{requirements.txt}) in vse nastavitve, ki vplivajo na rezultat, tako da lahko drugi poskus ponovijo. Tabela~\ref{g10:tab:parametri} je primer.]
+
+\begin{table}[htbp]
+\caption{Nastavitve poskusov. [Vpišite svoje vrednosti iz \texttt{results/}.]}
+\label{g10:tab:parametri}
+\centering
+\begin{tabular}{lr}
+\toprule
+Nastavitev & Vrednost \\
+\midrule
+kvantni procesor & [TODO] \\
+šumni model & [TODO] \\
+ponovitve (simulator / procesor) & [TODO] \\
+število semen prevajalnika & [TODO] \\
+ravni optimizacije & 0--3 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Zasnova poskusov}
+\label{g10:sec:poskusi}
+
+[Opišite štiri vezja (Toffolijeva in Fredkinova vrata~\cite{reversible:mraz}, polni seštevalnik, 2-bitni Cuccarov seštevalnik~\cite{g10:cuccaro2004}), pripravo vhoda z vrati X in \texttt{barrier}, ravni optimizacije (iz \texttt{results/passes.txt}, pomen prehodov po dokumentaciji~\cite{g10:qiskit_optimization}), seriji A in B ter platforme.]
+
+[Za izris kvantnih vezij uporabite paket \texttt{quantikz}. Slika~\ref{g10:fig:vezje} je vzorec iz predloge, ki ga zamenjajte z vezjem iz svoje naloge.]
+
+\begin{figure}[htbp]
+\centering
+\begin{quantikz}
+\lstick{$\ket{0}$} & \gate{H} & \ctrl{1} & \meter{} \\
+\lstick{$\ket{0}$} & \qw      & \targ{}  & \meter{}
+\end{quantikz}
+\caption{[Vzorec: priprava in merjenje Bellovega stanja. Zamenjajte z npr.\ Toffolijevimi vrati ali polnim seštevalnikom.]}
+\label{g10:fig:vezje}
+\end{figure}
+
+[Kratke odseke kode lahko vključite z okoljem \texttt{lstlisting}, celotno kodo pa hranite v repozitoriju.]
+
+\begin{lstlisting}[language=Python, caption={[Vzorec: prevajanje vezja. Zamenjajte z odsekom iz svoje kode.]}, label={g10:lst:qiskit}]
+from qiskit.transpiler import generate_preset_pass_manager
+
+for level in range(4):
+    pm = generate_preset_pass_manager(optimization_level=level,
+                                      backend=backend, seed_transpiler=seed)
+    isa = pm.run(qc)
+\end{lstlisting}
+
+\subsection{Metrike}
+\label{g10:sec:metrike}
+
+[Naštejte strukturne metrike (število kubitov, število dvokubitnih vrat, globina, skupno število vrat, čas prevajanja). Verjetnost pravilnega rezultata zapišite z enačbo~\eqref{g10:eq:ppravilno} in pojasnite oznake.]
+
+\begin{equation}
+P_\text{pravilno} = \frac{1}{|V|} \sum_{v \in V} \frac{N_\text{pravilno}(v)}{N}
+\label{g10:eq:ppravilno}
+\end{equation}
+
+[Pojasnite, kako izračunate zmanjšanje števila vrat v \% in razliko v pravilnosti v odstotnih točkah.]
+
+
+\section{Rezultati}
+\label{g10:sec:rezultati}
+
+[Rezultate predstavite s slikami, grafi in tabelami ter jih v besedilu razložite. Vsako sliko in tabelo omenite v besedilu, npr.\ tabela~\ref{g10:tab:primerjava}. Grafe shranjujte v poddirektoriju \texttt{img} v formatu PDF.]
+
+\begin{table}[htbp]
+\caption{[Primerjava z literaturo: število CNOT za Toffolijeva in Fredkinova vrata. Vpišite svoje vrednosti in navedite vire.]}
+\label{g10:tab:primerjava}
+\centering
+\begin{tabular}{lrr}
+\toprule
+Izvedba & Toffoli & Fredkin \\
+\midrule
+naša, raven [ ] & [ ] & [ ] \\
+literatura & [ ] & [ ] \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\section{Razprava}
+\label{g10:sec:razprava}
+
+[Odgovorite na raziskovalno vprašanje in rezultat primerjajte s pričakovanim. Hipotezi izrecno potrdite ali zavrnite. Opišite omejitve: kaj vaši rezultati pokažejo in česa ne.]
+
+\subsection{Kaj ni delovalo}
+\label{g10:sec:neuspehi}
+
+[Opišite vsaj en poskus, ki ni uspel, kaj ste opazili in zakaj po vašem mnenju ni deloval.]
+
+
+\section{Zaključek}
+\label{g10:sec:zakljucek}
+
+[Povzemite glavni rezultat v nekaj stavkih in predlagajte, kako bi delo nadaljevali.]
+
+
+\section*{Doprinosi avtorjev}
+
+[Avtor je en sam: v enem stavku zapišite, da je pripravil izdelek in poročilo.]
+
+\section*{Izjava o uporabi generativne umetne inteligence}
+
+[Navedite orodja in za kaj ste jih uporabili. Npr. pomoč pri pisanju kode, lektoriranje ali iskanje virov.]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Konec poglavja
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bibliographystyle{unsrtnat}   % izpiše tudi DOI in URL
+\bibliography{references}
+
+\end{document}

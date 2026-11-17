@@ -1,0 +1,14 @@
+# latexmkrc -- nastavitve za latexmk v tej mapi
+#
+# Pomožne datoteke (.aux, .log, .bbl, .fls, ...) gredo v mapo build/.
+# PDF ostane v isti mapi kot main.tex.
+#
+# Prevajanje iz terminala:   latexmk main.tex
+# Brisanje pomožnih datotek: latexmk -c
+# VS Code (LaTeX Workshop) privzeto poda -outdir in -auxdir, ki
+# preglasita te nastavitve. Zato je v seminar1/.vscode/settings.json
+# orodje latexmk nastavljeno brez teh dveh argumentov.
+
+$pdf_mode = 1;        # prevajaj s pdflatex
+$aux_dir  = 'build';  # pomožne datoteke
+$out_dir  = '.';      # PDF ob main.tex

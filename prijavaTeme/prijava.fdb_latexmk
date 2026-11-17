@@ -1,7 +1,7 @@
 # Fdb version 4
-["pdflatex"] 1794389710.84083 "/mnt/shared/FRI/4. letnik/NPMP/vaje/seminar1/githubRepo/prijavaTeme/prijava.tex" "prijava.pdf" "prijava" 1794389711.12978 0
+["pdflatex"] 1794772270.99289 "/mnt/shared/FRI/4. letnik/NPMP/vaje/seminar1/githubRepo/prijavaTeme/prijava.tex" "prijava.pdf" "prijava" 1794772271.26612 0
   "/etc/texmf/web2c/texmf.cnf" 1793561383.98094 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/mnt/shared/FRI/4. letnik/NPMP/vaje/seminar1/githubRepo/prijavaTeme/prijava.tex" 1794389710.31582 3051 b002eb6e211cde20ee25c72f6a76aefd ""
+  "/mnt/shared/FRI/4. letnik/NPMP/vaje/seminar1/githubRepo/prijavaTeme/prijava.tex" 1794772270.83357 2983 40145170e601c34d7d1fad7355f59c0d ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecbx1095.tfm" 1136768653 3584 21b378cca2e40816b0e6d74a4dc98f04 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecbx1200.tfm" 1136768653 3584 402da0b29eafbad07963b1224b222f18 ""
@@ -47,8 +47,8 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1769369718 41603 27f93b3067076450172040dcd57ca8b3 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1793561402 5541477 3118940318599480888143717dd32d64 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1793561453 3639779 82b6492aa95233aea60862e33821d5fe ""
-  "prijava.aux" 1794389711.09848 170 590c21ab4e19f47ffa5765d63f084b6b "pdflatex"
-  "prijava.tex" 1794389710.31582 3051 b002eb6e211cde20ee25c72f6a76aefd ""
+  "prijava.aux" 1794772271.23487 170 590c21ab4e19f47ffa5765d63f084b6b "pdflatex"
+  "prijava.tex" 1794772270.83357 2983 40145170e601c34d7d1fad7355f59c0d ""
   (generated)
   "prijava.aux"
   "prijava.log"

@@ -1,0 +1,30 @@
+=== raven optimizacije 0 ===
+  [init] UnitarySynthesis, HighLevelSynthesis, BasisTranslator
+  [layout] SetLayout, TrivialLayout, FullAncillaAllocation, EnlargeWithAncilla, ApplyLayout
+  [routing] CheckMap, BarrierBeforeFinalMeasurements, SabreSwap(heuristic=basic, trials=5), FilterOpNodes
+  [translation] UnitarySynthesis, HighLevelSynthesis, BasisTranslator
+  [scheduling] ContainsInstruction, TimeUnitConversion, InstructionDurationCheck, ConstrainedReschedule
+
+=== raven optimizacije 1 ===
+  [init] UnitarySynthesis, HighLevelSynthesis, BasisTranslator, InverseCancellation, ContractIdleWiresInControlFlow
+  [layout] SetLayout, TrivialLayout, CheckMap, VF2Layout, BarrierBeforeFinalMeasurements, SabreLayout(max_iterations=2, layout_trials=5, swap_trials=5), FullAncillaAllocation, EnlargeWithAncilla, ApplyLayout
+  [routing] CheckMap, BarrierBeforeFinalMeasurements, SabreSwap(heuristic=decay, trials=5), VF2PostLayout, ApplyLayout, FilterOpNodes
+  [translation] UnitarySynthesis, HighLevelSynthesis, BasisTranslator
+  [optimization] Size, Depth, FixedPoint, FixedPoint, Optimize1qGatesDecomposition, InverseCancellation, ContractIdleWiresInControlFlow, GatesInBasis, UnitarySynthesis, HighLevelSynthesis, BasisTranslator, Size, Depth, FixedPoint, FixedPoint
+  [scheduling] ContainsInstruction, TimeUnitConversion, InstructionDurationCheck, ConstrainedReschedule
+
+=== raven optimizacije 2 ===
+  [init] UnitarySynthesis, HighLevelSynthesis, BasisTranslator, ElidePermutations, RemoveDiagonalGatesBeforeMeasure, RemoveIdentityEquivalent, InverseCancellation, ContractIdleWiresInControlFlow, CommutativeCancellation, ConsolidateBlocks, Split2QUnitaries
+  [layout] SetLayout, VF2Layout, BarrierBeforeFinalMeasurements, SabreLayout(max_iterations=2, layout_trials=20, swap_trials=20), FullAncillaAllocation, EnlargeWithAncilla, ApplyLayout
+  [routing] CheckMap, BarrierBeforeFinalMeasurements, SabreSwap(heuristic=decay, trials=20), VF2PostLayout, ApplyLayout, FilterOpNodes
+  [translation] UnitarySynthesis, HighLevelSynthesis, BasisTranslator
+  [optimization] TwoQubitPeepholeOptimization, Size, Depth, FixedPoint, FixedPoint, RemoveIdentityEquivalent, Optimize1qGatesDecomposition, CommutativeCancellation, ContractIdleWiresInControlFlow, GatesInBasis, UnitarySynthesis, HighLevelSynthesis, BasisTranslator, Size, Depth, FixedPoint, FixedPoint
+  [scheduling] ContainsInstruction, TimeUnitConversion, InstructionDurationCheck, ConstrainedReschedule
+
+=== raven optimizacije 3 ===
+  [init] UnitarySynthesis, HighLevelSynthesis, BasisTranslator, ElidePermutations, RemoveDiagonalGatesBeforeMeasure, RemoveIdentityEquivalent, InverseCancellation, ContractIdleWiresInControlFlow, CommutativeCancellation, ConsolidateBlocks, Split2QUnitaries
+  [layout] SetLayout, VF2Layout, BarrierBeforeFinalMeasurements, SabreLayout(max_iterations=4, layout_trials=20, swap_trials=20), FullAncillaAllocation, EnlargeWithAncilla, ApplyLayout
+  [routing] CheckMap, BarrierBeforeFinalMeasurements, SabreSwap(heuristic=decay, trials=20), VF2PostLayout, ApplyLayout, FilterOpNodes
+  [translation] UnitarySynthesis, HighLevelSynthesis, BasisTranslator
+  [optimization] Size, Depth, MinimumPoint, TwoQubitPeepholeOptimization, RemoveIdentityEquivalent, Optimize1qGatesDecomposition, CommutativeCancellation, ContractIdleWiresInControlFlow, GatesInBasis, UnitarySynthesis, HighLevelSynthesis, BasisTranslator, Size, Depth, MinimumPoint, VF2PostLayout, ApplyLayout
+  [scheduling] ContainsInstruction, TimeUnitConversion, InstructionDurationCheck, ConstrainedReschedule

@@ -1,0 +1,48 @@
+=== raven optimizacije 0 (vsi prehodi) ===
+  [init] UnitarySynthesis, HighLevelSynthesis, BasisTranslator
+  [layout] SetLayout, TrivialLayout, FullAncillaAllocation, EnlargeWithAncilla, ApplyLayout
+  [routing] CheckMap, BarrierBeforeFinalMeasurements, SabreSwap(heuristic=basic, trials=5), FilterOpNodes
+  [translation] UnitarySynthesis, HighLevelSynthesis, BasisTranslator
+  [scheduling] ContainsInstruction, TimeUnitConversion, InstructionDurationCheck, ConstrainedReschedule
+
+=== raven optimizacije 1 (razlika od ravni 0) ===
+  [init]
+    + InverseCancellation, ContractIdleWiresInControlFlow  (za BasisTranslator)
+  [layout]
+    + CheckMap, VF2Layout, BarrierBeforeFinalMeasurements, SabreLayout(max_iterations=2, layout_trials=5, swap_trials=5)  (za TrivialLayout)
+  [routing]
+    - SabreSwap(heuristic=basic, trials=5)
+    + SabreSwap(heuristic=decay, trials=5), VF2PostLayout, ApplyLayout  (za BarrierBeforeFinalMeasurements)
+  [optimization]
+    + Size, Depth, FixedPoint, FixedPoint, Optimize1qGatesDecomposition, InverseCancellation, ContractIdleWiresInControlFlow, GatesInBasis, UnitarySynthesis, HighLevelSynthesis, BasisTranslator, Size, Depth, FixedPoint, FixedPoint  (na začetku)
+  brez sprememb: translation, scheduling
+
+=== raven optimizacije 2 (razlika od ravni 1) ===
+  [init]
+    + ElidePermutations, RemoveDiagonalGatesBeforeMeasure, RemoveIdentityEquivalent  (za BasisTranslator)
+    + CommutativeCancellation, ConsolidateBlocks, Split2QUnitaries  (za ContractIdleWiresInControlFlow)
+  [layout]
+    - TrivialLayout, CheckMap
+    - SabreLayout(max_iterations=2, layout_trials=5, swap_trials=5)
+    + SabreLayout(max_iterations=2, layout_trials=20, swap_trials=20)  (za BarrierBeforeFinalMeasurements)
+  [routing]
+    - SabreSwap(heuristic=decay, trials=5)
+    + SabreSwap(heuristic=decay, trials=20)  (za BarrierBeforeFinalMeasurements)
+  [optimization]
+    + TwoQubitPeepholeOptimization  (na začetku)
+    + RemoveIdentityEquivalent  (za FixedPoint)
+    - InverseCancellation
+    + CommutativeCancellation  (za Optimize1qGatesDecomposition)
+  brez sprememb: translation, scheduling
+
+=== raven optimizacije 3 (razlika od ravni 2) ===
+  [layout]
+    - SabreLayout(max_iterations=2, layout_trials=20, swap_trials=20)
+    + SabreLayout(max_iterations=4, layout_trials=20, swap_trials=20)  (za BarrierBeforeFinalMeasurements)
+  [optimization]
+    - TwoQubitPeepholeOptimization
+    - FixedPoint, FixedPoint
+    + MinimumPoint, TwoQubitPeepholeOptimization  (za Depth)
+    - FixedPoint, FixedPoint
+    + MinimumPoint, VF2PostLayout, ApplyLayout  (za Depth)
+  brez sprememb: init, routing, translation, scheduling

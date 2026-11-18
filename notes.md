@@ -1,0 +1,3 @@
+# Za zapomnit
+- algoritem Sabre, ki se uporablja za izbiro postavitve, deluje nakljucno, odvisno od semena - zato je treba veckrat pognati z razlicnim semenom in povpreciti na koncu.
+- IBM procesor redno kalibrira. Za vsak par sosednjih kubitov izmeri, kako pogosto dvokubitna vrata cz na tem paru dajo napačen rezultat. To je napaka vrat, na primer 0.003. Pomeni približno 0,3 % možnosti, da gre pri enih vratih na tem paru kaj narobe. Podobno ima vsak kubit napako meritve, na primer 0.02: v 2 % primerov preberemo napačen bit. Vrednosti se med pari zelo razlikujejo. Nekateri pari so dobri, drugi so lahko desetkrat slabši. Tvoje vezje se bo izvajalo na izbranih kubitih in njihovih povezavah. Čim manjše so te napake, tem večja bo P_pravilno.

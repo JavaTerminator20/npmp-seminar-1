@@ -1,19 +1,15 @@
 """
 Prevajanje vezij in strukturne metrike (faza 2).
 
-Za vsako vezje, raven optimizacije (0-3), seme in serijo (A/B)
-vezje prevedemo za ciljni procesor in zapišemo:
-število kubitov, število dvokubitnih vrat, globino, število vrat
-in čas prevajanja.
+Za vsako vezje, raven optimizacije (0-3), seme in serijo (A/B) vezje prevedemo za ciljni procesor in zapišemo:
+število kubitov, število dvokubitnih vrat, globino, število vrat in čas prevajanja.
 
   Serija A: privzeto prevajanje (prevajalnik sam izbere postavitev).
-  Serija B: vse ravni dobijo isto začetno postavitev (initial_layout),
-            ki jo enkrat izberemo za vsako vezje. Tako ločimo vpliv
-            postavitve od vpliva optimizacije vrat.
+  Serija B: vse ravni dobijo isto začetno postavitev (initial_layout), ki jo enkrat izberemo za vsako vezje.
+            Tako ločimo vpliv postavitve od vpliva optimizacije vrat.
 
-Strukturne metrike so enake za vse vhode istega vezja, ker se vhodi
-razlikujejo samo v vratih X pred barrierjem. Zato tu prevajamo
-vezje z ničelnim vhodom (brez vrat X).
+Strukturne metrike so enake za vse vhode istega vezja, ker se vhodi razlikujejo samo v vratih X pred
+barrierjem. Zato tu prevajamo vezje z ničelnim vhodom (brez vrat X).
 
 Izhodne datoteke v results/:
   structural.csv  - metrike za vse kombinacije
@@ -22,10 +18,9 @@ Izhodne datoteke v results/:
   passes_diff.txt - razlika prehodov vsake ravni od prejšnje
 
 Zagon:
-    python src/transpile_run.py                      # FakeTorino
+    python src/transpile_run.py                      # FakeMarrakesh
     python src/transpile_run.py --backend ibm_fez    # pravi backend
-Prevajanje za pravi backend ne porabi časa kvantnega procesorja,
-potrebuje pa shranjen IBM račun (save_account).
+Prevajanje za pravi backend ne porabi časa kvantnega procesorja, potrebuje pa shranjen IBM račun (save_account).
 """
 
 import argparse
@@ -38,8 +33,7 @@ import pandas as pd
 from qiskit import transpile
 from qiskit.transpiler import generate_preset_pass_manager
 
-# CIRCUITS: seznam imen vezij, build(ime, vhod): zgradi vezje,
-# inputs(ime): seznam vseh vhodov (vsak vhod je seznam bitov)
+# CIRCUITS: seznam imen vezij, build(ime, vhod): zgradi vezje, inputs(ime): seznam vseh vhodov (vsak je seznam bitov)
 from circuits import CIRCUITS, build, inputs
 
 # Mapa results/ je na isti ravni kot src/ (githubRepo/results).
@@ -47,9 +41,8 @@ from circuits import CIRCUITS, build, inputs
 RESULTS = Path(__file__).resolve().parent.parent / "results"
 
 LEVELS = [0, 1, 2, 3]     # ravni optimizacije, ki jih primerjamo
-# Prevajalnik pri postavitvi in usmerjanju uporablja naključje
-# (algoritem Sabre). Z več semeni dobimo povprečje in raztros,
-# s fiksnimi semeni pa ponovljive rezultate.
+# Prevajalnik pri postavitvi in usmerjanju uporablja naključje (algoritem Sabre).
+# Z več semeni dobimo povprečje in raztros, s fiksnimi semeni pa ponovljive rezultate.
 SEEDS = list(range(10))   # semena 0..9 za seed_transpiler
 
 
@@ -60,15 +53,13 @@ SEEDS = list(range(10))   # semena 0..9 za seed_transpiler
 def get_backend(name):
     """
     Vrne ciljni procesor.
-    "fake_torino" je lokalna kopija procesora ibm_torino (povezljivost
-    in kalibracija sta shranjeni v Qiskitu), zato ne potrebuje računa.
-    Za drugo ime se poveže na IBM z lokalno shranjenim računom.
+    "fake_marrakesh" je lokalna kopija procesora ibm_marrakesh (povezljivost in kalibracija sta shranjeni
+    v Qiskitu), zato ne potrebuje računa. Za drugo ime se poveže na IBM z lokalno shranjenim računom.
     """
-    # Uvoza sta znotraj funkcije, da se povezava na IBM
-    # vzpostavi le, kadar jo res potrebujemo.
-    if name == "fake_torino":
-        from qiskit_ibm_runtime.fake_provider import FakeTorino
-        return FakeTorino()
+    # Uvoza sta znotraj funkcije, da se povezava na IBM vzpostavi le, kadar jo res potrebujemo.
+    if name == "fake_marrakesh":
+        from qiskit_ibm_runtime.fake_provider import FakeMarrakesh
+        return FakeMarrakesh()
     from qiskit_ibm_runtime import QiskitRuntimeService
     # QiskitRuntimeService() prebere račun, shranjen s save_account
     return QiskitRuntimeService().backend(name)
@@ -77,8 +68,7 @@ def get_backend(name):
 def two_qubit_gate_name(backend):
     """Ime osnovnih dvokubitnih vrat procesorja (cz, ecr ali cx)."""
     # target.operation_names = vsa vrata, ki jih procesor zna izvesti.
-    # Novejši procesorji (Heron, npr. Torino) imajo cz,
-    # starejši (Eagle) ecr, simulatorji pogosto cx.
+    # Novejši procesorji (Heron, npr. Marrakesh) imajo cz, starejši (Eagle) ecr, simulatorji pogosto cx.
     for name in ["cz", "ecr", "cx"]:
         if name in backend.target.operation_names:
             return name
@@ -95,29 +85,25 @@ def choose_layout_B(backend, n):
 
     Preprost požrešni postopek:
       1. začnemo pri vsakem fizičnem kubitu posebej,
-      2. dodajamo soseda, pri katerem je vsota napake dvokubitnih vrat
-         (do že izbranega kubita) in napake meritve najmanjša,
+      2. dodajamo soseda, pri katerem je vsota napake dvokubitnih vrat (do že izbranega kubita)
+         in napake meritve najmanjša,
       3. ko imamo n kubitov, izračunamo skupno napako,
       4. vzamemo izbiro z najmanjšo skupno napako.
 
     Vrne seznam fizičnih kubitov: logični kubit i -> fizični kubit [i].
     """
-    # target vsebuje povezljivost čipa in kalibracijske podatke
-    # (napake vrat in meritev za vsak kubit oz. par kubitov)
+    # target vsebuje povezljivost čipa in kalibracijske podatke (napake vrat in meritev za vsak kubit oz. par)
     target = backend.target
     gate = two_qubit_gate_name(backend)
 
     # --- 1. korak: napake povezav in sosedi vsakega kubita ---
-    # target[gate] je slovar {(q1, q2): lastnosti vrat na tem paru}.
-    # Vsak par, ki je v slovarju, je povezava na čipu.
-    edge_error = {}                                    # {povezava: napaka}
+    # target[gate] je slovar {(q1, q2): lastnosti vrat na tem paru}. Vsak par v slovarju je povezava na čipu.
+    edge_error = {}                                           # {povezava: napaka}
     neighbors = {q: set() for q in range(target.num_qubits)}  # {kubit: sosedi}
     for (q1, q2), props in target[gate].items():
-        # če podatka o napaki ni, vzamemo 1.0 (najslabše), da se
-        # algoritem takšni povezavi izogne
+        # če podatka o napaki ni, vzamemo 1.0 (najslabše), da se algoritem takšni povezavi izogne
         err = props.error if props is not None and props.error is not None else 1.0
-        # frozenset: (3, 4) in (4, 3) sta ista povezava.
-        # Če sta smeri zapisani posebej, obdržimo manjšo napako.
+        # frozenset: (3, 4) in (4, 3) sta ista povezava. Če sta smeri zapisani posebej, obdržimo manjšo napako.
         key = frozenset((q1, q2))
         edge_error[key] = min(err, edge_error.get(key, 1.0))
         neighbors[q1].add(q2)
@@ -156,8 +142,8 @@ def choose_layout_B(backend, n):
         if len(chosen) == n and (best_score is None or score < best_score):
             best_layout = chosen
             best_score = score
-    # Opomba: postopek je požrešen (v vsakem koraku vzame trenutno
-    # najcenejšega soseda), zato ne zagotavlja globalno najboljše izbire.
+    # Opomba: postopek je požrešen (v vsakem koraku vzame trenutno najcenejšega soseda),
+    # zato ne zagotavlja globalno najboljše izbire.
     return best_layout
 
 
@@ -167,11 +153,9 @@ def choose_layout_B(backend, n):
 
 def make_pass_manager(backend, level, seed, layout=None):
     """Upravljalnik prehodov za dano raven. Uporabi ga tudi simulate.py."""
-    # Upravljalnik prehodov (pass manager) je zaporedje korakov
-    # prevajanja: postavitev, usmerjanje, razgradnja v osnovna vrata
-    # in optimizacija. Katere korake vsebuje, določa raven.
-    # layout=None: postavitev izbere prevajalnik (serija A),
-    # sicer uporabi podani seznam fizičnih kubitov (serija B).
+    # Upravljalnik prehodov (pass manager) je zaporedje korakov prevajanja: postavitev, usmerjanje,
+    # razgradnja v osnovna vrata in optimizacija. Katere korake vsebuje, določa raven.
+    # layout=None: postavitev izbere prevajalnik (serija A), sicer uporabi podani seznam fizičnih kubitov (serija B).
     return generate_preset_pass_manager(
         optimization_level=level,
         backend=backend,
@@ -191,8 +175,7 @@ def metrics(qc):
         # barrier in delay nista prava vrata, zato ju preskočimo
         if name in ("barrier", "delay"):
             continue
-        # kubit, na katerem deluje ukaz, štejemo kot uporabljen
-        # (tudi pri meritvi)
+        # kubit, na katerem deluje ukaz, štejemo kot uporabljen (tudi pri meritvi)
         for q in inst.qubits:
             used_qubits.add(qc.find_bit(q).index)
         if name == "measure":
@@ -200,8 +183,7 @@ def metrics(qc):
         n_gates += 1
         if len(inst.qubits) == 2:
             n_2q += 1
-    # globina = dolžina najdaljše verige ukazov, ki si morajo slediti;
-    # barrierji je ne smejo podaljšati
+    # globina = dolžina najdaljše verige ukazov, ki si morajo slediti; barrierji je ne smejo podaljšati
     depth = qc.depth(filter_function=lambda inst: inst.operation.name != "barrier")
     return {
         "st_kubitov": len(used_qubits),
@@ -218,23 +200,20 @@ def zero_input_circuit(name):
     return build(name, [0] * n)
 
 
-
 def before_metrics(name, print_circuit=False):
     """
     Metrike pred prevajanjem za procesor ("raven = pred" v structural.csv).
-    Toffolijevih in Fredkinovih vrat ne moremo neposredno šteti kot
-    dvokubitna vrata, zato vezje razgradimo na CNOT in enokubitna vrata
-    BREZ omejitev povezljivosti in brez optimizacije. To je izhodišče,
+    Toffolijevih in Fredkinovih vrat ne moremo neposredno šteti kot dvokubitna vrata, zato vezje razgradimo
+    na CNOT in enokubitna vrata BREZ omejitev povezljivosti in brez optimizacije. To je izhodišče,
     primerljivo z literaturo (npr. 6 CNOT za Toffolija).
     """
-    # Brez argumenta backend prevajalnik ne pozna povezljivosti,
-    # zato ne dodaja vrat SWAP. "u" je splošna enokubitna vrata.
-    qc = transpile(zero_input_circuit(name), basis_gates=["cx", "u"],
-                   optimization_level=0, seed_transpiler=0)
-    
+    # Brez argumenta backend prevajalnik ne pozna povezljivosti, zato ne dodaja vrat SWAP.
+    # "u" je splošna enokubitna vrata.
+    qc = transpile(zero_input_circuit(name), basis_gates=["cx", "u"], optimization_level=0, seed_transpiler=0)
+
     if print_circuit:
         print(qc.draw())
-    
+
     return metrics(qc)
 
 
@@ -242,9 +221,8 @@ def before_metrics(name, print_circuit=False):
 # Seznam prehodov za vsako raven (za opis ravni v Metodah)
 # ---------------------------------------------------------------------
 
-# Parametri, ki jih izpišemo ob imenu prehoda. Ravni se pri teh
-# prehodih ne razlikujejo po imenu, ampak po nastavitvah (npr. več
-# poskusov na višji ravni). Seme izpustimo, ker je povsod enako.
+# Parametri, ki jih izpišemo ob imenu prehoda. Ravni se pri teh prehodih ne razlikujejo po imenu,
+# ampak po nastavitvah (npr. več poskusov na višji ravni). Seme izpustimo, ker je povsod enako.
 PASS_PARAMS = {
     "SabreLayout": ["max_iterations", "layout_trials", "swap_trials"],
     "SabreSwap": ["heuristic", "trials"],
@@ -254,12 +232,10 @@ PASS_PARAMS = {
 def pass_names(task):
     """
     Rekurzivno pobere imena prehodov iz (gnezdenih) kontrolerjev.
-    Pri prehodih iz PASS_PARAMS ime dopolni s parametri,
-    npr. "SabreSwap(heuristic=decay, trials=5)".
+    Pri prehodih iz PASS_PARAMS ime dopolni s parametri, npr. "SabreSwap(heuristic=decay, trials=5)".
     """
-    # Kontroler (npr. zanka "ponavljaj, dokler se vezje spreminja")
-    # ima atribut tasks s seznamom notranjih prehodov ali kontrolerjev.
-    # Opomba: pogoje in zanke kontrolerjev tu izgubimo.
+    # Kontroler (npr. zanka "ponavljaj, dokler se vezje spreminja") ima atribut tasks s seznamom
+    # notranjih prehodov ali kontrolerjev. Opomba: pogoje in zanke kontrolerjev tu izgubimo.
     if hasattr(task, "tasks"):
         names = []
         for t in task.tasks:
@@ -268,8 +244,7 @@ def pass_names(task):
     # posamezen prehod: ime njegovega razreda (npr. "SabreLayout")
     name = type(task).__name__
     if name in PASS_PARAMS:
-        params = ", ".join(f"{p}={getattr(task, p, '?')}"
-                           for p in PASS_PARAMS[name])
+        params = ", ".join(f"{p}={getattr(task, p, '?')}" for p in PASS_PARAMS[name])
         name += f"({params})"
     return [name]
 
@@ -278,8 +253,7 @@ def stage_passes(backend, level):
     """Vrne slovar {faza: seznam imen prehodov} za dano raven."""
     pm = make_pass_manager(backend, level, seed=0)
     stages = {}
-    # pm.stages: imena faz prevajanja, npr. init, layout, routing,
-    # translation, optimization, scheduling
+    # pm.stages: imena faz prevajanja, npr. init, layout, routing, translation, optimization, scheduling
     for stage in pm.stages:
         stage_pm = getattr(pm, stage)
         if stage_pm is None:
@@ -333,8 +307,7 @@ def write_passes(backend, path, diff_path):
             for stage, names in stages.items():
                 lines.append(f"  [{stage}] " + ", ".join(names))
         else:
-            lines.append(f"=== raven optimizacije {level} "
-                         f"(razlika od ravni {level - 1}) ===")
+            lines.append(f"=== raven optimizacije {level} (razlika od ravni {level - 1}) ===")
             unchanged = []
             # unija faz obeh ravni, v vrstnem redu, kot nastopajo
             for stage in list(dict.fromkeys([*prev, *stages])):
@@ -349,7 +322,6 @@ def write_passes(backend, path, diff_path):
         lines.append("")
         prev = stages
     diff_path.write_text("\n".join(lines), encoding="utf-8")
-
 
 
 '''
@@ -370,19 +342,17 @@ def write_passes(backend, path, diff_path):
 def main():
     # ime procesorja lahko podamo v ukazni vrstici (--backend ...)
     parser = argparse.ArgumentParser()
-    parser.add_argument("--backend", default="fake_torino")
+    parser.add_argument("--backend", default="fake_marrakesh")
     args = parser.parse_args()
 
     RESULTS.mkdir(exist_ok=True)
     backend = get_backend(args.backend)
     print(f"Ciljni procesor: {backend.name}")
 
-    # 1. seznam prehodov po ravneh -> results/passes.txt,
-    #    razlike med ravnmi -> results/passes_diff.txt
+    # 1. seznam prehodov po ravneh -> results/passes.txt, razlike med ravnmi -> results/passes_diff.txt
     write_passes(backend, RESULTS / "passes.txt", RESULTS / "passes_diff.txt")
 
-    # 2. postavitve za serijo B (enkrat na vezje)
-    # Shranimo jih v JSON, da simulate.py uporabi iste kubite.
+    # 2. postavitve za serijo B (enkrat na vezje). Shranimo jih v JSON, da simulate.py uporabi iste kubite.
     layouts_B = {}
     for name in CIRCUITS:
         n = len(inputs(name)[0])
@@ -390,13 +360,12 @@ def main():
     with open(RESULTS / "layouts_B.json", "w", encoding="utf-8") as f:
         json.dump({"backend": backend.name, "layouts": layouts_B}, f, indent=2)
 
-    # 3. prevajanje vseh kombinacij; vsaka kombinacija je ena vrstica
-    # (slovar), na koncu iz seznama vrstic naredimo tabelo
+    # 3. prevajanje vseh kombinacij; vsaka kombinacija je ena vrstica (slovar),
+    # na koncu iz seznama vrstic naredimo tabelo
     rows = []
     for name in CIRCUITS:
         # metrike pred prevajanjem (ena vrstica na vezje)
-        rows.append({"vezje": name, "serija": "-", "raven": "pred", "seme": "",
-                     **before_metrics(name), "cas_s": ""})
+        rows.append({"vezje": name, "serija": "-", "raven": "pred", "seme": "", **before_metrics(name), "cas_s": ""})
 
         qc = zero_input_circuit(name)
         for serija in ["A", "B"]:
@@ -409,9 +378,8 @@ def main():
                     tqc = pm.run(qc)
                     elapsed = time.perf_counter() - t0
                     # **metrics(tqc) razširi slovar metrik v stolpce vrstice
-                    rows.append({"vezje": name, "serija": serija, "raven": level,
-                                 "seme": seed, **metrics(tqc),
-                                 "cas_s": round(elapsed, 4)})
+                    rows.append({"vezje": name, "serija": serija, "raven": level, "seme": seed,
+                                 **metrics(tqc), "cas_s": round(elapsed, 4)})
         print(f"  {name}: končano")
 
     # 4. zapis tabele: 4 vezja x (1 "pred" + 2 seriji x 4 ravni x 10 semen)
@@ -419,11 +387,8 @@ def main():
     df.to_csv(RESULTS / "structural.csv", index=False)
     print(f"Zapisano: {RESULTS / 'structural.csv'} ({len(df)} vrstic)")
 
-    # 5. kratek povzetek: povprečno število dvokubitnih vrat čez semena
-    # (vrstice = vezje in serija, stolpci = raven)
-    summary = (df[df["raven"] != "pred"]
-               .groupby(["vezje", "serija", "raven"])["st_dvokubitnih"]
-               .mean().unstack("raven"))
+    # 5. kratek povzetek: povprečno število dvokubitnih vrat čez semena (vrstice = vezje in serija, stolpci = raven)
+    summary = df[df["raven"] != "pred"].groupby(["vezje", "serija", "raven"])["st_dvokubitnih"].mean().unstack("raven")
     print("\nPovprečno število dvokubitnih vrat:")
     print(summary.round(1))
 

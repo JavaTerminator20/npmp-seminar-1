@@ -6,12 +6,11 @@ Za vsako vezje imamo:
   - seznam vseh vhodov,
   - funkcijo, ki klasično izračuna pričakovani izhod.
 
-Vhod je zapisan kot seznam bitov, kjer je bits[i] začetna vrednost
-kubita i. Primer: bits = [1, 0, 1] pomeni q0 = 1, q1 = 0, q2 = 1.
+Vhod je zapisan kot seznam bitov, kjer je bits[i] začetna vrednost kubita i.
+Primer: bits = [1, 0, 1] pomeni q0 = 1, q1 = 0, q2 = 1.
 
-POZOR, vrstni red bitov: Qiskit izpiše rezultat meritve od zadnjega
-kubita proti prvemu. Za q0 = 1, q1 = 0, q2 = 0 dobimo niz "001".
-Zato funkcija to_qiskit_string() seznam bitov obrne.
+POZOR, vrstni red bitov: Qiskit izpiše rezultat meritve od zadnjega kubita proti prvemu.
+Za q0 = 1, q1 = 0, q2 = 0 dobimo niz "001". Zato funkcija to_qiskit_string() seznam bitov obrne.
 
 Zagon (test na idealnem simulatorju, vseh 40 vhodov):
     python src/circuits.py
@@ -128,11 +127,9 @@ def full_adder_expected(bits):
 #      q3 = b1, q4 = a1   (višja bita)
 #      q5 = z  (izhodni prenos, začne z 0)
 #
-#    Po izvedbi: a ostane, v b je vsota a + b (spodnja 2 bita),
-#    z je najvišji bit vsote, c0 se vrne na 0.
+#    Po izvedbi: a ostane, v b je vsota a + b (spodnja 2 bita), z je najvišji bit vsote, c0 se vrne na 0.
 #
-#    Razred CDKMRippleCarryAdder je v Qiskit 2.x zastarel,
-#    zato vezje gradimo ročno iz blokov MAJ in UMA.
+#    Razred CDKMRippleCarryAdder je v Qiskit 2.x zastarel, zato vezje gradimo ročno iz blokov MAJ in UMA.
 # ---------------------------------------------------------------------
 
 def maj(qc, c, b, a):
@@ -179,8 +176,7 @@ def cuccaro_expected(bits):
 
 
 # ---------------------------------------------------------------------
-# Skupni seznam vezij. Druge skripte uporabljajo samo ta slovar
-# in funkcije build(), expected(), inputs() spodaj.
+# Skupni seznam vezij. Druge skripte uporabljajo samo ta slovar in funkcije build(), expected(), inputs() spodaj.
 # ---------------------------------------------------------------------
 
 CIRCUITS = {
@@ -198,11 +194,9 @@ def inputs(name):
 
 def build(name, bits):
     """
-    Zgradi celotno vezje za en vhod:
-    vrata X za pripravo vhoda, barrier, jedro vezja, meritve.
+    Zgradi celotno vezje za en vhod: vrata X za pripravo vhoda, barrier, jedro vezja, meritve.
 
-    Barrier prepreči, da bi prevajalnik vrata X zlil z jedrom vezja.
-    Tako je jedro po prevajanju enako za vse vhode.
+    Barrier prepreči, da bi prevajalnik vrata X zlil z jedrom vezja. Tako je jedro po prevajanju enako za vse vhode.
     """
     core = CIRCUITS[name][0]()
     qc = QuantumCircuit(core.num_qubits, name=name)
@@ -239,8 +233,7 @@ def run_ideal_test(shots=100, seed=1234):
             if p == 1.0:
                 n_ok += 1
             else:
-                print(f"NAPAKA {name} vhod={to_qiskit_string(bits)} "
-                      f"pričakovano={want} dobljeno={counts}")
+                print(f"NAPAKA {name} vhod={to_qiskit_string(bits)} pričakovano={want} dobljeno={counts}")
     print(f"Pravilnih vhodov: {n_ok}/{n_all}")
     return n_ok == n_all
 

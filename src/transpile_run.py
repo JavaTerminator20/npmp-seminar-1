@@ -11,7 +11,7 @@ Za vsako vezje, raven optimizacije (0-3), seme in serijo (A/B) vezje prevedemo z
 Strukturne metrike so enake za vse vhode istega vezja, ker se vhodi razlikujejo samo v vratih X pred
 barrierjem. Zato tu prevajamo vezje z ničelnim vhodom (brez vrat X).
 
-Izhodne datoteke v results/:
+Izhodne datoteke v results/transpile_run/:
   structural.csv  - metrike za vse kombinacije
   layouts_B.json  - postavitve za serijo B (uporabi jih tudi simulate.py)
   passes.txt      - seznam prehodov za vsako raven optimizacije
@@ -39,6 +39,11 @@ from circuits import CIRCUITS, build, inputs
 # Mapa results/ je na isti ravni kot src/ (githubRepo/results).
 # Pot računamo od te datoteke, da skripta deluje iz katerekoli mape.
 RESULTS = Path(__file__).resolve().parent.parent / "results"
+# Vsaka skripta piše v svojo podmapo results/<ime skripte>/.
+RESULTS_TRANSPILE = RESULTS / "transpile_run"
+RESULTS_SIMULATE = RESULTS / "simulate"
+RESULTS_HARDWARE = RESULTS / "hardware"
+RESULTS_ANALYZE = RESULTS / "analyze"
 
 LEVELS = [0, 1, 2, 3]     # ravni optimizacije, ki jih primerjamo
 # Prevajalnik pri postavitvi in usmerjanju uporablja naključje (algoritem Sabre).
@@ -345,19 +350,20 @@ def main():
     parser.add_argument("--backend", default="fake_marrakesh")
     args = parser.parse_args()
 
-    RESULTS.mkdir(exist_ok=True)
+    out = RESULTS_TRANSPILE
+    out.mkdir(parents=True, exist_ok=True)
     backend = get_backend(args.backend)
     print(f"Ciljni procesor: {backend.name}")
 
-    # 1. seznam prehodov po ravneh -> results/passes.txt, razlike med ravnmi -> results/passes_diff.txt
-    write_passes(backend, RESULTS / "passes.txt", RESULTS / "passes_diff.txt")
+    # 1. seznam prehodov po ravneh -> passes.txt, razlike med ravnmi -> passes_diff.txt
+    write_passes(backend, out / "passes.txt", out / "passes_diff.txt")
 
     # 2. postavitve za serijo B (enkrat na vezje). Shranimo jih v JSON, da simulate.py uporabi iste kubite.
     layouts_B = {}
     for name in CIRCUITS:
         n = len(inputs(name)[0])
         layouts_B[name] = choose_layout_B(backend, n)
-    with open(RESULTS / "layouts_B.json", "w", encoding="utf-8") as f:
+    with open(out / "layouts_B.json", "w", encoding="utf-8") as f:
         json.dump({"backend": backend.name, "layouts": layouts_B}, f, indent=2)
 
     # 3. prevajanje vseh kombinacij; vsaka kombinacija je ena vrstica (slovar),
@@ -384,8 +390,8 @@ def main():
 
     # 4. zapis tabele: 4 vezja x (1 "pred" + 2 seriji x 4 ravni x 10 semen)
     df = pd.DataFrame(rows)
-    df.to_csv(RESULTS / "structural.csv", index=False)
-    print(f"Zapisano: {RESULTS / 'structural.csv'} ({len(df)} vrstic)")
+    df.to_csv(out / "structural.csv", index=False)
+    print(f"Zapisano: {out / 'structural.csv'} ({len(df)} vrstic)")
 
     # 5. kratek povzetek: povprečno število dvokubitnih vrat čez semena (vrstice = vezje in serija, stolpci = raven)
     summary = df[df["raven"] != "pred"].groupby(["vezje", "serija", "raven"])["st_dvokubitnih"].mean().unstack("raven")

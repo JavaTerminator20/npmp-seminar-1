@@ -1,0 +1,1991 @@
+{
+  "job_id": "900319ea-f3ac-48eb-a288-b7b2a377f8e0",
+  "procesor": "fake_marrakesh",
+  "naloga": "A",
+  "vezja": [
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 0,
+      "seme": 4,
+      "bits": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 0,
+      "seme": 4,
+      "bits": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 0,
+      "seme": 4,
+      "bits": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 0,
+      "seme": 4,
+      "bits": [
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 0,
+      "seme": 4,
+      "bits": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 0,
+      "seme": 4,
+      "bits": [
+        1,
+        0,
+        1
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 0,
+      "seme": 4,
+      "bits": [
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 0,
+      "seme": 4,
+      "bits": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 1,
+      "seme": 4,
+      "bits": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 1,
+      "seme": 4,
+      "bits": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 1,
+      "seme": 4,
+      "bits": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 1,
+      "seme": 4,
+      "bits": [
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 1,
+      "seme": 4,
+      "bits": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 1,
+      "seme": 4,
+      "bits": [
+        1,
+        0,
+        1
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 1,
+      "seme": 4,
+      "bits": [
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 1,
+      "seme": 4,
+      "bits": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 2,
+      "seme": 5,
+      "bits": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 2,
+      "seme": 5,
+      "bits": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 2,
+      "seme": 5,
+      "bits": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 2,
+      "seme": 5,
+      "bits": [
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 2,
+      "seme": 5,
+      "bits": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 2,
+      "seme": 5,
+      "bits": [
+        1,
+        0,
+        1
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 2,
+      "seme": 5,
+      "bits": [
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 2,
+      "seme": 5,
+      "bits": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 3,
+      "seme": 5,
+      "bits": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 3,
+      "seme": 5,
+      "bits": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 3,
+      "seme": 5,
+      "bits": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 3,
+      "seme": 5,
+      "bits": [
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 3,
+      "seme": 5,
+      "bits": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 3,
+      "seme": 5,
+      "bits": [
+        1,
+        0,
+        1
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 3,
+      "seme": 5,
+      "bits": [
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 3,
+      "seme": 5,
+      "bits": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "vezje": "fredkin",
+      "serija": "A",
+      "raven": 0,
+      "seme": 5,
+      "bits": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "fredkin",
+      "serija": "A",
+      "raven": 0,
+      "seme": 5,
+      "bits": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "vezje": "fredkin",
+      "serija": "A",
+      "raven": 0,
+      "seme": 5,
+      "bits": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "fredkin",
+      "serija": "A",
+      "raven": 0,
+      "seme": 5,
+      "bits": [
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "vezje": "fredkin",
+      "serija": "A",
+      "raven": 0,
+      "seme": 5,
+      "bits": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "fredkin",
+      "serija": "A",
+      "raven": 0,
+      "seme": 5,
+      "bits": [
+        1,
+        0,
+        1
+      ]
+    },
+    {
+      "vezje": "fredkin",
+      "serija": "A",
+      "raven": 0,
+      "seme": 5,
+      "bits": [
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "fredkin",
+      "serija": "A",
+      "raven": 0,
+      "seme": 5,
+      "bits": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "vezje": "fredkin",
+      "serija": "A",
+      "raven": 1,
+      "seme": 4,
+      "bits": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "fredkin",
+      "serija": "A",
+      "raven": 1,
+      "seme": 4,
+      "bits": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "vezje": "fredkin",
+      "serija": "A",
+      "raven": 1,
+      "seme": 4,
+      "bits": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "fredkin",
+      "serija": "A",
+      "raven": 1,
+      "seme": 4,
+      "bits": [
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "vezje": "fredkin",
+      "serija": "A",
+      "raven": 1,
+      "seme": 4,
+      "bits": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "fredkin",
+      "serija": "A",
+      "raven": 1,
+      "seme": 4,
+      "bits": [
+        1,
+        0,
+        1
+      ]
+    },
+    {
+      "vezje": "fredkin",
+      "serija": "A",
+      "raven": 1,
+      "seme": 4,
+      "bits": [
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "fredkin",
+      "serija": "A",
+      "raven": 1,
+      "seme": 4,
+      "bits": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "vezje": "fredkin",
+      "serija": "A",
+      "raven": 2,
+      "seme": 4,
+      "bits": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "fredkin",
+      "serija": "A",
+      "raven": 2,
+      "seme": 4,
+      "bits": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "vezje": "fredkin",
+      "serija": "A",
+      "raven": 2,
+      "seme": 4,
+      "bits": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "fredkin",
+      "serija": "A",
+      "raven": 2,
+      "seme": 4,
+      "bits": [
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "vezje": "fredkin",
+      "serija": "A",
+      "raven": 2,
+      "seme": 4,
+      "bits": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "fredkin",
+      "serija": "A",
+      "raven": 2,
+      "seme": 4,
+      "bits": [
+        1,
+        0,
+        1
+      ]
+    },
+    {
+      "vezje": "fredkin",
+      "serija": "A",
+      "raven": 2,
+      "seme": 4,
+      "bits": [
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "fredkin",
+      "serija": "A",
+      "raven": 2,
+      "seme": 4,
+      "bits": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "vezje": "fredkin",
+      "serija": "A",
+      "raven": 3,
+      "seme": 4,
+      "bits": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "fredkin",
+      "serija": "A",
+      "raven": 3,
+      "seme": 4,
+      "bits": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "vezje": "fredkin",
+      "serija": "A",
+      "raven": 3,
+      "seme": 4,
+      "bits": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "fredkin",
+      "serija": "A",
+      "raven": 3,
+      "seme": 4,
+      "bits": [
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "vezje": "fredkin",
+      "serija": "A",
+      "raven": 3,
+      "seme": 4,
+      "bits": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "fredkin",
+      "serija": "A",
+      "raven": 3,
+      "seme": 4,
+      "bits": [
+        1,
+        0,
+        1
+      ]
+    },
+    {
+      "vezje": "fredkin",
+      "serija": "A",
+      "raven": 3,
+      "seme": 4,
+      "bits": [
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "fredkin",
+      "serija": "A",
+      "raven": 3,
+      "seme": 4,
+      "bits": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "vezje": "polni_sestevalnik",
+      "serija": "A",
+      "raven": 0,
+      "seme": 5,
+      "bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "polni_sestevalnik",
+      "serija": "A",
+      "raven": 0,
+      "seme": 5,
+      "bits": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "polni_sestevalnik",
+      "serija": "A",
+      "raven": 0,
+      "seme": 5,
+      "bits": [
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "polni_sestevalnik",
+      "serija": "A",
+      "raven": 0,
+      "seme": 5,
+      "bits": [
+        0,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "polni_sestevalnik",
+      "serija": "A",
+      "raven": 0,
+      "seme": 5,
+      "bits": [
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "polni_sestevalnik",
+      "serija": "A",
+      "raven": 0,
+      "seme": 5,
+      "bits": [
+        1,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "polni_sestevalnik",
+      "serija": "A",
+      "raven": 0,
+      "seme": 5,
+      "bits": [
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "polni_sestevalnik",
+      "serija": "A",
+      "raven": 0,
+      "seme": 5,
+      "bits": [
+        1,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "polni_sestevalnik",
+      "serija": "A",
+      "raven": 1,
+      "seme": 4,
+      "bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "polni_sestevalnik",
+      "serija": "A",
+      "raven": 1,
+      "seme": 4,
+      "bits": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "polni_sestevalnik",
+      "serija": "A",
+      "raven": 1,
+      "seme": 4,
+      "bits": [
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "polni_sestevalnik",
+      "serija": "A",
+      "raven": 1,
+      "seme": 4,
+      "bits": [
+        0,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "polni_sestevalnik",
+      "serija": "A",
+      "raven": 1,
+      "seme": 4,
+      "bits": [
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "polni_sestevalnik",
+      "serija": "A",
+      "raven": 1,
+      "seme": 4,
+      "bits": [
+        1,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "polni_sestevalnik",
+      "serija": "A",
+      "raven": 1,
+      "seme": 4,
+      "bits": [
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "polni_sestevalnik",
+      "serija": "A",
+      "raven": 1,
+      "seme": 4,
+      "bits": [
+        1,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "polni_sestevalnik",
+      "serija": "A",
+      "raven": 2,
+      "seme": 6,
+      "bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "polni_sestevalnik",
+      "serija": "A",
+      "raven": 2,
+      "seme": 6,
+      "bits": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "polni_sestevalnik",
+      "serija": "A",
+      "raven": 2,
+      "seme": 6,
+      "bits": [
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "polni_sestevalnik",
+      "serija": "A",
+      "raven": 2,
+      "seme": 6,
+      "bits": [
+        0,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "polni_sestevalnik",
+      "serija": "A",
+      "raven": 2,
+      "seme": 6,
+      "bits": [
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "polni_sestevalnik",
+      "serija": "A",
+      "raven": 2,
+      "seme": 6,
+      "bits": [
+        1,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "polni_sestevalnik",
+      "serija": "A",
+      "raven": 2,
+      "seme": 6,
+      "bits": [
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "polni_sestevalnik",
+      "serija": "A",
+      "raven": 2,
+      "seme": 6,
+      "bits": [
+        1,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "polni_sestevalnik",
+      "serija": "A",
+      "raven": 3,
+      "seme": 6,
+      "bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "polni_sestevalnik",
+      "serija": "A",
+      "raven": 3,
+      "seme": 6,
+      "bits": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "polni_sestevalnik",
+      "serija": "A",
+      "raven": 3,
+      "seme": 6,
+      "bits": [
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "polni_sestevalnik",
+      "serija": "A",
+      "raven": 3,
+      "seme": 6,
+      "bits": [
+        0,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "polni_sestevalnik",
+      "serija": "A",
+      "raven": 3,
+      "seme": 6,
+      "bits": [
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "polni_sestevalnik",
+      "serija": "A",
+      "raven": 3,
+      "seme": 6,
+      "bits": [
+        1,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "polni_sestevalnik",
+      "serija": "A",
+      "raven": 3,
+      "seme": 6,
+      "bits": [
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "polni_sestevalnik",
+      "serija": "A",
+      "raven": 3,
+      "seme": 6,
+      "bits": [
+        1,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 0,
+      "seme": 4,
+      "bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 0,
+      "seme": 4,
+      "bits": [
+        0,
+        1,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 0,
+      "seme": 4,
+      "bits": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 0,
+      "seme": 4,
+      "bits": [
+        0,
+        1,
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 0,
+      "seme": 4,
+      "bits": [
+        0,
+        0,
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 0,
+      "seme": 4,
+      "bits": [
+        0,
+        1,
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 0,
+      "seme": 4,
+      "bits": [
+        0,
+        0,
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 0,
+      "seme": 4,
+      "bits": [
+        0,
+        1,
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 0,
+      "seme": 4,
+      "bits": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 0,
+      "seme": 4,
+      "bits": [
+        0,
+        1,
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 0,
+      "seme": 4,
+      "bits": [
+        0,
+        0,
+        0,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 0,
+      "seme": 4,
+      "bits": [
+        0,
+        1,
+        0,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 0,
+      "seme": 4,
+      "bits": [
+        0,
+        0,
+        1,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 0,
+      "seme": 4,
+      "bits": [
+        0,
+        1,
+        1,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 0,
+      "seme": 4,
+      "bits": [
+        0,
+        0,
+        1,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 0,
+      "seme": 4,
+      "bits": [
+        0,
+        1,
+        1,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 1,
+      "seme": 3,
+      "bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 1,
+      "seme": 3,
+      "bits": [
+        0,
+        1,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 1,
+      "seme": 3,
+      "bits": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 1,
+      "seme": 3,
+      "bits": [
+        0,
+        1,
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 1,
+      "seme": 3,
+      "bits": [
+        0,
+        0,
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 1,
+      "seme": 3,
+      "bits": [
+        0,
+        1,
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 1,
+      "seme": 3,
+      "bits": [
+        0,
+        0,
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 1,
+      "seme": 3,
+      "bits": [
+        0,
+        1,
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 1,
+      "seme": 3,
+      "bits": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 1,
+      "seme": 3,
+      "bits": [
+        0,
+        1,
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 1,
+      "seme": 3,
+      "bits": [
+        0,
+        0,
+        0,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 1,
+      "seme": 3,
+      "bits": [
+        0,
+        1,
+        0,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 1,
+      "seme": 3,
+      "bits": [
+        0,
+        0,
+        1,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 1,
+      "seme": 3,
+      "bits": [
+        0,
+        1,
+        1,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 1,
+      "seme": 3,
+      "bits": [
+        0,
+        0,
+        1,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 1,
+      "seme": 3,
+      "bits": [
+        0,
+        1,
+        1,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 2,
+      "seme": 1,
+      "bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 2,
+      "seme": 1,
+      "bits": [
+        0,
+        1,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 2,
+      "seme": 1,
+      "bits": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 2,
+      "seme": 1,
+      "bits": [
+        0,
+        1,
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 2,
+      "seme": 1,
+      "bits": [
+        0,
+        0,
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 2,
+      "seme": 1,
+      "bits": [
+        0,
+        1,
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 2,
+      "seme": 1,
+      "bits": [
+        0,
+        0,
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 2,
+      "seme": 1,
+      "bits": [
+        0,
+        1,
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 2,
+      "seme": 1,
+      "bits": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 2,
+      "seme": 1,
+      "bits": [
+        0,
+        1,
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 2,
+      "seme": 1,
+      "bits": [
+        0,
+        0,
+        0,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 2,
+      "seme": 1,
+      "bits": [
+        0,
+        1,
+        0,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 2,
+      "seme": 1,
+      "bits": [
+        0,
+        0,
+        1,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 2,
+      "seme": 1,
+      "bits": [
+        0,
+        1,
+        1,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 2,
+      "seme": 1,
+      "bits": [
+        0,
+        0,
+        1,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 2,
+      "seme": 1,
+      "bits": [
+        0,
+        1,
+        1,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 3,
+      "seme": 1,
+      "bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 3,
+      "seme": 1,
+      "bits": [
+        0,
+        1,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 3,
+      "seme": 1,
+      "bits": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 3,
+      "seme": 1,
+      "bits": [
+        0,
+        1,
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 3,
+      "seme": 1,
+      "bits": [
+        0,
+        0,
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 3,
+      "seme": 1,
+      "bits": [
+        0,
+        1,
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 3,
+      "seme": 1,
+      "bits": [
+        0,
+        0,
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 3,
+      "seme": 1,
+      "bits": [
+        0,
+        1,
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 3,
+      "seme": 1,
+      "bits": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 3,
+      "seme": 1,
+      "bits": [
+        0,
+        1,
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 3,
+      "seme": 1,
+      "bits": [
+        0,
+        0,
+        0,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 3,
+      "seme": 1,
+      "bits": [
+        0,
+        1,
+        0,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 3,
+      "seme": 1,
+      "bits": [
+        0,
+        0,
+        1,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 3,
+      "seme": 1,
+      "bits": [
+        0,
+        1,
+        1,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 3,
+      "seme": 1,
+      "bits": [
+        0,
+        0,
+        1,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "cuccaro",
+      "serija": "A",
+      "raven": 3,
+      "seme": 1,
+      "bits": [
+        0,
+        1,
+        1,
+        1,
+        1,
+        0
+      ]
+    }
+  ]
+}

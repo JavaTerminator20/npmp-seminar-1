@@ -15,7 +15,7 @@ z MEDIANO števila dvokubitnih vrat. Tako na procesorju poženemo tipičen prime
 Pred oddajo program izpiše povzetek in zahteva potrditev ("da").
 Kvota v Open Plan je omejena (10 minut na 28 dni).
 
-Izhodne datoteke v results/:
+Izhodne datoteke v results/hardware/ (lokalni preizkus s fake_... v results/hardware/preizkus/):
   hardware.csv              - P_pravilno (enak format kot noisy.csv + job_id)
   ibm_jobs.csv              - ena vrstica na nalogo (procesor, datum, ID ...)
   jobs.json                 - isto kot ibm_jobs.csv + različice paketov
@@ -40,7 +40,7 @@ from qiskit_ibm_runtime import SamplerV2
 
 from circuits import CIRCUITS, inputs
 from simulate import calibration_date, load_layouts_B, package_versions, result_row, transpile_all_inputs
-from transpile_run import LEVELS, SEEDS, RESULTS, get_backend, make_pass_manager, metrics, zero_input_circuit
+from transpile_run import LEVELS, SEEDS, RESULTS_HARDWARE, get_backend, make_pass_manager, metrics, zero_input_circuit
 
 SHOTS = 1000   # ponovitve na vezje na procesorju
 
@@ -290,9 +290,9 @@ def main():
     if args.out_dir:
         out = Path(args.out_dir)
     elif args.backend and args.backend.startswith("fake"):
-        out = RESULTS / "hardware_preizkus"
+        out = RESULTS_HARDWARE / "preizkus"
     else:
-        out = RESULTS
+        out = RESULTS_HARDWARE
     out.mkdir(parents=True, exist_ok=True)
 
     if args.task == "prenesi":

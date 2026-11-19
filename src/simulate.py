@@ -10,7 +10,7 @@ Postopek:
      40 vhodov x 4 ravni x 10 semen x 2 seriji = 3200 vezij.
   4. Za vsak zagon izračunamo P_pravilno = (število pravilnih izhodov) / (število ponovitev).
 
-Izhodne datoteke v results/:
+Izhodne datoteke v results/simulate/:
   ideal.csv          - kontrola na idealnem simulatorju
   noisy.csv          - P_pravilno na šumnem simulatorju (ena vrstica na vezje)
   noisy_counts.json  - surovi histogrami šumnega simulatorja
@@ -40,7 +40,7 @@ from qiskit_aer import AerSimulator
 # to_qiskit_string(vhod): seznam bitov -> niz, kot ga izpiše Qiskit
 from circuits import CIRCUITS, build, expected, inputs, to_qiskit_string
 # iste funkcije kot pri strukturnih metrikah, da je prevajanje enako
-from transpile_run import LEVELS, SEEDS, RESULTS, choose_layout_B, get_backend, make_pass_manager, metrics
+from transpile_run import LEVELS, SEEDS, RESULTS_SIMULATE, RESULTS_TRANSPILE, choose_layout_B, get_backend, make_pass_manager, metrics
 
 SERIES = ["A", "B"]
 SHOTS_NOISY = 2000      # ponovitve na vezje pri šumnem simulatorju
@@ -73,24 +73,25 @@ def load_layouts_B(backend):
     """
     Vrne postavitve za serijo B: {vezje: [fizični kubiti]}.
 
-    - Če results/layouts_B.json ustreza temu procesorju (ga je zapisal transpile_run.py), uporabimo te
+    - Če results/transpile_run/layouts_B.json ustreza temu procesorju (ga je zapisal transpile_run.py), uporabimo te
       postavitve, da so iste kot v structural.csv.
-    - Sicer pogledamo results/layouts_B_<procesor>.json.
+    - Sicer pogledamo results/simulate/layouts_B_<procesor>.json.
     - Če tudi te ni, postavitve izračunamo iz trenutne kalibracije in jih shranimo. Tako simulate.py
       in hardware.py na istem procesorju uporabita iste kubite.
     """
-    main_file = RESULTS / "layouts_B.json"
+    main_file = RESULTS_TRANSPILE / "layouts_B.json"
     if main_file.exists():
         data = json.loads(main_file.read_text(encoding="utf-8"))
         if data["backend"] == backend.name:
             return data["layouts"]
 
-    own_file = RESULTS / f"layouts_B_{backend.name}.json"
+    own_file = RESULTS_SIMULATE / f"layouts_B_{backend.name}.json"
     if own_file.exists():
         return json.loads(own_file.read_text(encoding="utf-8"))["layouts"]
 
     print(f"  Postavitve za serijo B na {backend.name} še ne obstajajo, izračunam jih iz trenutne kalibracije.")
     layouts = {name: choose_layout_B(backend, len(inputs(name)[0])) for name in CIRCUITS}
+    own_file.parent.mkdir(parents=True, exist_ok=True)
     own_file.write_text(json.dumps({
         "backend": backend.name,
         "kalibracija": calibration_date(backend),
@@ -171,7 +172,7 @@ def main():
     parser.add_argument("--backend", default="fake_marrakesh", help="procesor, iz katerega zgradimo šumni model")
     parser.add_argument("--shots", type=int, default=SHOTS_NOISY)
     parser.add_argument("--seeds", type=int, default=len(SEEDS), help="število semen prevajalnika (0..n-1)")
-    parser.add_argument("--out-dir", default=str(RESULTS), help="mapa za izhodne datoteke")
+    parser.add_argument("--out-dir", default=str(RESULTS_SIMULATE), help="mapa za izhodne datoteke")
     args = parser.parse_args()
 
     out = Path(args.out_dir)

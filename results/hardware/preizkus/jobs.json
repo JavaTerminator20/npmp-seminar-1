@@ -1,0 +1,36 @@
+[
+  {
+    "job_id": "15c3178a-2409-452c-82a3-db9e9c40617a",
+    "procesor": "fake_marrakesh",
+    "naloga": "poskus",
+    "datum_oddaje": "2026-11-19T11:39:18",
+    "kalibracija": "2025-02-26 14:52:45-05:00",
+    "st_vezij": 8,
+    "ponovitve": 1000,
+    "status": "DONE",
+    "porabljen_cas_s": 0,
+    "verzije": {
+      "qiskit": "2.6.2",
+      "qiskit-aer": "0.18.4",
+      "qiskit-ibm-runtime": "0.52.1"
+    },
+    "postavitve_B": {}
+  },
+  {
+    "job_id": "900319ea-f3ac-48eb-a288-b7b2a377f8e0",
+    "procesor": "fake_marrakesh",
+    "naloga": "A",
+    "datum_oddaje": "2026-11-19T11:49:39",
+    "kalibracija": "2025-02-26 14:52:45-05:00",
+    "st_vezij": 160,
+    "ponovitve": 1000,
+    "status": "DONE",
+    "porabljen_cas_s": 0,
+    "verzije": {
+      "qiskit": "2.6.2",
+      "qiskit-aer": "0.18.4",
+      "qiskit-ibm-runtime": "0.52.1"
+    },
+    "postavitve_B": {}
+  }
+]

@@ -1,18 +1,18 @@
 """
 Analiza rezultatov: tabele in grafi (faza 5).
 
-Vhodne datoteke v results/:
-  structural.csv   - strukturne metrike (transpile_run.py), obvezno
-  ideal.csv        - kontrola na idealnem simulatorju (simulate.py)
-  noisy.csv        - P_pravilno na šumnem simulatorju (simulate.py)
-  hardware.csv     - P_pravilno na pravem procesorju (hardware.py)
-  ibm_jobs.csv     - seznam nalog na procesorju (hardware.py)
+Vhodne datoteke (vsaka skripta piše v svojo podmapo results/<skripta>/):
+  transpile_run/structural.csv - strukturne metrike, obvezno
+  simulate/ideal.csv           - kontrola na idealnem simulatorju
+  simulate/noisy.csv           - P_pravilno na šumnem simulatorju
+  hardware/hardware.csv        - P_pravilno na pravem procesorju
+  hardware/ibm_jobs.csv        - seznam nalog na procesorju
 Če katere od zadnjih štirih datotek ni (npr. pred zagonom na procesorju), ustrezni del analize preskočimo.
 
 Izhodne datoteke:
-  results/tabela1_strukturne.csv (+ .tex)  strukturne metrike po ravneh
-  results/tabela2_pravilnost.csv (+ .tex)  P_pravilno po ravneh in platformah
-  results/tabela3_hipoteze.csv   (+ .tex)  preverjanje obeh hipotez
+  results/analyze/tabela1_strukturne.csv (+ .tex)  strukturne metrike po ravneh
+  results/analyze/tabela2_pravilnost.csv (+ .tex)  P_pravilno po ravneh in platformah
+  results/analyze/tabela3_hipoteze.csv   (+ .tex)  preverjanje obeh hipotez
   figures/graf1_dvokubitna_vrata.pdf       dvokubitna vrata po ravneh
   figures/graf2_pravilnost.pdf             P_pravilno: šumni model in procesor
   figures/graf3_vrata_proti_P.pdf          dvokubitna vrata proti P_pravilno
@@ -38,6 +38,11 @@ import pandas as pd
 
 RESULTS = Path(__file__).resolve().parent.parent / "results"
 FIGURES = Path(__file__).resolve().parent.parent / "figures"
+# Podmape results/ po skriptah (enako kot v transpile_run.py)
+SUB_TRANSPILE = "transpile_run"
+SUB_SIMULATE = "simulate"
+SUB_HARDWARE = "hardware"
+SUB_ANALYZE = "analyze"
 
 LEVELS = [0, 1, 2, 3]
 
@@ -505,18 +510,20 @@ def print_hypotheses(hyp):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--results-dir", default=str(RESULTS), help="mapa z vhodnimi CSV (in za tabele)")
+    parser.add_argument("--results-dir", default=str(RESULTS), help="mapa results/ s podmapami skript")
     parser.add_argument("--figures-dir", default=str(FIGURES), help="mapa za grafe")
     args = parser.parse_args()
-    res = Path(args.results_dir)
+    root = Path(args.results_dir)
+    res = root / SUB_ANALYZE          # sem gredo tabele
+    res.mkdir(parents=True, exist_ok=True)
     fig_dir = Path(args.figures_dir)
     fig_dir.mkdir(parents=True, exist_ok=True)
 
     print("Berem rezultate ...")
-    st = pd.read_csv(res / "structural.csv", dtype={"raven": str})
-    ideal = read_optional(res / "ideal.csv")
-    noisy = read_optional(res / "noisy.csv")
-    hw = load_hardware(res)
+    st = pd.read_csv(root / SUB_TRANSPILE / "structural.csv", dtype={"raven": str})
+    ideal = read_optional(root / SUB_SIMULATE / "ideal.csv")
+    noisy = read_optional(root / SUB_SIMULATE / "noisy.csv")
+    hw = load_hardware(root / SUB_HARDWARE)
 
     # --- tabela 1 in graf 1: samo strukturne metrike ---
     struct_table = table_structural(st)

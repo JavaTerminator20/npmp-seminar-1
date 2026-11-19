@@ -1,0 +1,95 @@
+{
+  "job_id": "15c3178a-2409-452c-82a3-db9e9c40617a",
+  "procesor": "fake_marrakesh",
+  "naloga": "poskus",
+  "vezja": [
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 1,
+      "seme": 4,
+      "bits": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 1,
+      "seme": 4,
+      "bits": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 1,
+      "seme": 4,
+      "bits": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 1,
+      "seme": 4,
+      "bits": [
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 1,
+      "seme": 4,
+      "bits": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 1,
+      "seme": 4,
+      "bits": [
+        1,
+        0,
+        1
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 1,
+      "seme": 4,
+      "bits": [
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "vezje": "toffoli",
+      "serija": "A",
+      "raven": 1,
+      "seme": 4,
+      "bits": [
+        1,
+        1,
+        1
+      ]
+    }
+  ]
+}

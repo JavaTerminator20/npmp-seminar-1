@@ -1,0 +1,30 @@
+{
+  "backend": "fake_marrakesh",
+  "kalibracija": "2025-02-26 14:52:45-05:00",
+  "layouts": {
+    "toffoli": [
+      12,
+      13,
+      14
+    ],
+    "fredkin": [
+      12,
+      13,
+      14
+    ],
+    "polni_sestevalnik": [
+      11,
+      12,
+      13,
+      14
+    ],
+    "cuccaro": [
+      15,
+      14,
+      19,
+      13,
+      12,
+      35
+    ]
+  }
+}

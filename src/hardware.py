@@ -137,8 +137,9 @@ def job_usage(job):
 # ---------------------------------------------------------------------
 # Obdelava rezultatov
 # ---------------------------------------------------------------------
+from qiskit_ibm_runtime import RuntimeJobV2
 
-def process_result(out, job, meta, circuits, info):
+def process_result(out, job: RuntimeJobV2, meta, circuits, info):
     """
     Iz rezultata naloge izračuna P_pravilno, shrani surove histograme in doda vrstice v hardware.csv.
     """
@@ -154,8 +155,7 @@ def process_result(out, job, meta, circuits, info):
     # 2. P_pravilno za vsako vezje
     rows = []
     for m, tqc, counts in zip(meta, circuits, all_counts):
-        row = result_row("procesor", info["procesor"], m["vezje"], m["serija"], m["raven"], m["seme"], m["bits"],
-                         tqc, counts)
+        row = result_row("procesor", info["procesor"], m["vezje"], m["serija"], m["raven"], m["seme"], m["bits"], tqc, counts)
         row["job_id"] = job_id
         rows.append(row)
     append_csv(out / "hardware.csv", rows)

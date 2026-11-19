@@ -51,3 +51,5 @@
 
     Zakaj primerjava: ko seriji primerjamo (graf 4), ločimo, koliko k pravilnosti prispeva izbira postavitve in koliko optimizacija vezja.
 
+- **strukturne metrike:** iz `transpile_run.py` so iz `FakeMarrakesh` ne iz pravega - to omeni v *Metode* v porocilu.
+

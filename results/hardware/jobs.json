@@ -1,0 +1,78 @@
+[
+  {
+    "job_id": "dbvdfmlarooc73fld450",
+    "procesor": "ibm_marrakesh",
+    "naloga": "poskus",
+    "datum_oddaje": "2026-11-19T12:04:59",
+    "kalibracija": "2026-11-19 11:52:58+01:00",
+    "st_vezij": 8,
+    "ponovitve": 1000,
+    "status": "DONE",
+    "porabljen_cas_s": 0,
+    "verzije": {
+      "qiskit": "2.6.2",
+      "qiskit-aer": "0.18.4",
+      "qiskit-ibm-runtime": "0.52.1"
+    },
+    "postavitve_B": {}
+  },
+  {
+    "job_id": "dbvdljmps3fc73bkae10",
+    "procesor": "ibm_marrakesh",
+    "naloga": "A",
+    "datum_oddaje": "2026-11-19T12:17:34",
+    "kalibracija": "2026-11-19 11:57:17+01:00",
+    "st_vezij": 160,
+    "ponovitve": 1000,
+    "status": "DONE",
+    "porabljen_cas_s": 0,
+    "verzije": {
+      "qiskit": "2.6.2",
+      "qiskit-aer": "0.18.4",
+      "qiskit-ibm-runtime": "0.52.1"
+    },
+    "postavitve_B": {}
+  },
+  {
+    "job_id": "dbvdtjtarooc73flds5g",
+    "procesor": "ibm_marrakesh",
+    "naloga": "B",
+    "datum_oddaje": "2026-11-19T12:34:40",
+    "kalibracija": "2026-11-19 12:13:42+01:00",
+    "st_vezij": 160,
+    "ponovitve": 1000,
+    "status": "DONE",
+    "porabljen_cas_s": 46,
+    "verzije": {
+      "qiskit": "2.6.2",
+      "qiskit-aer": "0.18.4",
+      "qiskit-ibm-runtime": "0.52.1"
+    },
+    "postavitve_B": {
+      "toffoli": [
+        20,
+        21,
+        22
+      ],
+      "fredkin": [
+        20,
+        21,
+        22
+      ],
+      "polni_sestevalnik": [
+        137,
+        147,
+        148,
+        146
+      ],
+      "cuccaro": [
+        126,
+        127,
+        137,
+        147,
+        148,
+        146
+      ]
+    }
+  }
+]

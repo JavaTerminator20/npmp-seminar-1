@@ -1,29 +1,29 @@
 {
-  "backend": "fake_torino",
+  "backend": "fake_marrakesh",
   "layouts": {
     "toffoli": [
-      28,
-      29,
-      36
+      12,
+      13,
+      14
     ],
     "fredkin": [
-      28,
-      29,
-      36
+      12,
+      13,
+      14
     ],
     "polni_sestevalnik": [
-      28,
-      29,
-      36,
-      30
+      11,
+      12,
+      13,
+      14
     ],
     "cuccaro": [
-      27,
-      28,
-      29,
-      36,
-      30,
-      17
+      15,
+      14,
+      19,
+      13,
+      12,
+      35
     ]
   }
 }

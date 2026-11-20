@@ -8,3 +8,4 @@ Vsaka skripta piše v svojo podmapo `results/<ime skripte>/`:
 | `src/simulate.py` | `results/simulate/` | `ideal.csv`, `noisy.csv`, `noisy_counts.json`, `noisy_meta.json`, `layouts_B_<procesor>.json` |
 | `src/hardware.py` | `results/hardware/` | `hardware.csv`, `ibm_jobs.csv`, `jobs.json`, `jobs/` (preizkus s `fake_...` v `results/hardware/preizkus/`) |
 | `src/analyze.py` | `results/analyze/` | `tabela1–3_*.csv` in `.tex` (grafi gredo v `figures/`) |
+

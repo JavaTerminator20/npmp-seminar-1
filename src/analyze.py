@@ -396,15 +396,13 @@ def graf2_correctness(corr_table, out, serija="A"):
         series.append(("procesor", "procesor", COLOR_HW))
     for ax, name in zip(axes, CIRCUITS):
         for i, (plat, label, color) in enumerate(series):
-            t = corr_table[(corr_table["platforma"] == plat) & (corr_table["vezje"] == name)
-                           & (corr_table["serija"] == serija)]
+            t = corr_table[(corr_table["platforma"] == plat) & (corr_table["vezje"] == name) & (corr_table["serija"] == serija)]
             t = t.set_index("raven").reindex(LEVELS)
             offset = (i - (len(series) - 1) / 2) * width
             xs = [l + offset for l in LEVELS]
             ax.bar(xs, t["P_povp"], width, label=label, color=color, edgecolor="white", linewidth=0.8)
             if plat == "sumni_model":
-                ax.errorbar(xs, t["P_povp"], yerr=t["P_std"], fmt="none", ecolor="#52514e",
-                            elinewidth=0.7, capsize=1.5)
+                ax.errorbar(xs, t["P_povp"], yerr=t["P_std"], fmt="none", ecolor="#52514e", elinewidth=0.7, capsize=1.5)
         ax.set_title(CIRCUIT_LABELS[name])
         ax.set_xticks(LEVELS)
         ax.set_xlabel("raven")
@@ -440,13 +438,10 @@ def graf3_scatter(runs, out):
     ax.set_ylim(0, 1.0)
 
     # legenda: vezja (barva + oblika) in platformi (polna / prazna točka)
-    handles = [Line2D([], [], linestyle="none", marker=CIRCUIT_MARKERS[c], markerfacecolor=CIRCUIT_COLORS[c],
-                      markeredgecolor="white", markersize=6, label=CIRCUIT_LABELS[c]) for c in CIRCUITS]
-    handles.append(Line2D([], [], linestyle="none", marker="o", markerfacecolor="#6b6a65",
-                          markeredgecolor="white", markersize=6, label="šumni model"))
+    handles = [Line2D([], [], linestyle="none", marker=CIRCUIT_MARKERS[c], markerfacecolor=CIRCUIT_COLORS[c], markeredgecolor="white", markersize=6, label=CIRCUIT_LABELS[c]) for c in CIRCUITS]
+    handles.append(Line2D([], [], linestyle="none", marker="o", markerfacecolor="#6b6a65", markeredgecolor="white", markersize=6, label="šumni model"))
     if "procesor" in set(runs["platforma"]):
-        handles.append(Line2D([], [], linestyle="none", marker="o", markerfacecolor="none",
-                              markeredgecolor="#6b6a65", markersize=6, label="procesor"))
+        handles.append(Line2D([], [], linestyle="none", marker="o", markerfacecolor="none", markeredgecolor="#6b6a65", markersize=6, label="procesor"))
     ax.legend(handles=handles, loc="upper right", fontsize=7)
     fig.tight_layout()
     fig.savefig(out / "graf3_vrata_proti_P.pdf")
@@ -465,13 +460,10 @@ def graf4_series(struct_table, corr_table, out):
             g = struct_table[(struct_table["vezje"] == name) & (struct_table["serija"] == serija)].copy()
             g["raven"] = g["raven"].astype(int)
             g = g.sort_values("raven")
-            axes[0, j].errorbar(g["raven"], g["dvokubitna_povp"], yerr=g["dvokubitna_std"], color=color,
-                                marker="o", markersize=4, linewidth=1.5, capsize=1.5, elinewidth=0.7, label=label)
-            p = corr_table[(corr_table["platforma"] == "sumni_model") & (corr_table["vezje"] == name)
-                           & (corr_table["serija"] == serija)]
+            axes[0, j].errorbar(g["raven"], g["dvokubitna_povp"], yerr=g["dvokubitna_std"], color=color, marker="o", markersize=4, linewidth=1.5, capsize=1.5, elinewidth=0.7, label=label)
+            p = corr_table[(corr_table["platforma"] == "sumni_model") & (corr_table["vezje"] == name) & (corr_table["serija"] == serija)]
             p = p.sort_values("raven")
-            axes[1, j].errorbar(p["raven"], p["P_povp"], yerr=p["P_std"], color=color,
-                                marker="o", markersize=4, linewidth=1.5, capsize=1.5, elinewidth=0.7, label=label)
+            axes[1, j].errorbar(p["raven"], p["P_povp"], yerr=p["P_std"], color=color, marker="o", markersize=4, linewidth=1.5, capsize=1.5, elinewidth=0.7, label=label)
         axes[0, j].set_title(CIRCUIT_LABELS[name])
         axes[0, j].set_ylim(bottom=0)
         # število vrat je celo število: oznake brez decimalk

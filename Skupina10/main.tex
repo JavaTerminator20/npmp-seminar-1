@@ -64,21 +64,21 @@
 \author{Matej Mlakar}
 \maketitle
 
-\abstract{[Povzetek v 5 do 10 vrsticah. Navedite raziskovalno vprašanje, uporabljeno metodo in orodja ter glavni rezultat s konkretno številko (zmanjšanje števila dvokubitnih vrat pri prehodu z ravni 0 na 1 in razlika med ravnema 2 in 3). Končajte z enim stavkom o pomenu rezultata.]}
+\abstract{%
+% TODO: povzetek (napišem čisto na koncu)
+}
 
 
 \section{Uvod}
 \label{g10:sec:uvod}
 
-[Kratko predstavite področje (največ dve strani) in ga podprite z viri: reverzibilno procesiranje~\cite{reversible:mraz}, kvantna vrata so unitarna in zato reverzibilna [TODO: vir],današnji šumni procesorji (NISQ)~\cite{preskill2018}, prevajalnik Qiskit~\cite{qiskit2024}. Opišite, kaj so drugi že naredili in kaj ostaja odprto.]
+% TODO: uvod (napišem po rezultatih in razpravi)
 
 \begin{svgraybox}
 \textbf{Raziskovalno vprašanje.} Kako vpliva raven optimizacije prevajalnika Qiskit (0--3) na število dvokubitnih vrat reverzibilnih vezij in kako to vpliva na verjetnost pravilnega rezultata na šumnem procesorju IBM?
 
 \textbf{Pričakovani rezultat.} Prehod z ravni 0 na raven 1 zmanjša število dvokubitnih vrat za več kot 30~\% in opazno izboljša pravilnost. Razlika med ravnema 2 in 3 je majhna: manj kot 10~\% v številu dvokubitnih vrat in manj kot 3 odstotne točke v pravilnosti.
 \end{svgraybox}
-
-[Na koncu uvoda v nekaj stavkih opišite zgradbo poglavja.]
 
 
 \section{Metode}
@@ -87,110 +87,279 @@
 \subsection{Orodja in nastavitve}
 \label{g10:sec:orodja}
 
-[Navedite orodja z različicami (iz \texttt{requirements.txt}) in vse nastavitve, ki vplivajo na rezultat, tako da lahko drugi poskus ponovijo. Tabela~\ref{g10:tab:parametri} je primer.]
+Vezja smo zgradili in prevedli s knjižnico Qiskit~\cite{qiskit2024}.
+Simulirali smo jih s Qiskit Aer,
+na procesor pa poslali s Qiskit IBM Runtime.
+Različice paketov so v datoteki \texttt{requirements.txt}.
+Koda, rezultati in navodila za ponovitev so v repozitoriju
+\url{https://github.com/JavaTerminator20/npmp-seminar-1}.
 
-\begin{table}[htbp]
-\caption{Nastavitve poskusov. [Vpišite svoje vrednosti iz \texttt{results/}.]}
-\label{g10:tab:parametri}
-\centering
-\begin{tabular}{lr}
-\toprule
-Nastavitev & Vrednost \\
-\midrule
-kvantni procesor & [TODO] \\
-šumni model & [TODO] \\
-ponovitve (simulator / procesor) & [TODO] \\
-število semen prevajalnika & [TODO] \\
-ravni optimizacije & 0--3 \\
-\bottomrule
-\end{tabular}
-\end{table}
+Vezja smo prevajali na vseh štirih ravneh optimizacije (0--3).
+Pognali smo jih na simulatorjih
+in na kvantnem procesorju \texttt{ibm\_marrakesh}.
+Šumni model simulatorja smo zgradili iz kalibracije tega procesorja
+19.~11.~2026 ob 12.13.
+Strukturne metrike smo izračunali za \texttt{FakeMarrakesh}, ki je
+posnetek istega procesorja.
+
+Procesor smo uporabljali z brezplačnim računom IBM Quantum
+(angl.\ Open Plan).
+Spada v družino Heron r2 in ima 156 kubitov
+v mreži \enquote{heavy-hex}~\cite{g10:ibm_processor_types}.
+Vsak kubit je povezan z največ tremi sosedi.
+Osnovna vrata so CZ, RZ, SX in X,
+edina dvokubitna vrata so torej CZ.
+Napake vrat in meritev ter čase razpada $T_1$ in $T_2$
+IBM izmeri ob kalibraciji, ki se med dnevom osvežuje.
+Zato smo za vsak poskus zapisali čas kalibracije
+in vse uporabljene kalibracije shranili.
+
+\texttt{FakeMarrakesh} je priložen paketu Qiskit IBM Runtime, zato
+prevajanje zanj ne potrebuje računa IBM in je ponovljivo.
+Povezljivost je enaka kot pri pravem procesorju.
+[V seriji A je število dvokubitnih vrat
+povsod enako kot pri prevajanju za pravi procesor.]
+[TODO: strukturne metrike serije B uskladiti
+s postavitvami, uporabljenimi na \texttt{ibm\_marrakesh}.]
+
 
 \subsection{Zasnova poskusov}
 \label{g10:sec:poskusi}
 
-[Opišite štiri vezja (Toffolijeva in Fredkinova vrata~\cite{reversible:mraz}, polni seštevalnik, 2-bitni Cuccarov seštevalnik~\cite{g10:cuccaro2004}), pripravo vhoda z vrati X in \texttt{barrier}, ravni optimizacije (iz \texttt{results/transpile\_run/passes.txt}, pomen prehodov po dokumentaciji~\cite{g10:qiskit_optimization}), seriji A in B ter platforme.]
+Uporabili smo štiri reverzibilna vezja (tabela~\ref{g10:tab:vezja}).
+Toffolijeva vrata negirajo ciljni bit,
+če sta oba kontrolna bita 1.
+Fredkinova vrata zamenjata dva bita,
+če je kontrolni bit 1.
+Obe funkciji tvorita poln funkcijski nabor~\cite{reversible:mraz}.
+Polni seštevalnik je sestavljen iz Toffolijevih vrat in vrat CNOT
+(slika~\ref{g10:fig:polni}).
+Dvobitni Cuccarov seštevalnik~\cite{g10:cuccaro2004}
+smo zgradili ročno iz blokov MAJ in UMA,
+saj je razred \texttt{CDKMRippleCarryAdder} v Qiskit 2.6.2 zastarel.
+Tako tudi natančno vemo, katera vrata vstopijo v prevajalnik.
+Velikost vezij narašča od 3 do 6 kubitov.
 
-[Za izris kvantnih vezij uporabite paket \texttt{quantikz}. Slika~\ref{g10:fig:vezje} je vzorec iz predloge, ki ga zamenjajte z vezjem iz svoje naloge.]
+\begin{table}[htbp]
+\caption{Reverzibilna vezja v poskusih.
+Vsako vezje smo pognali za vse vhode.}
+\label{g10:tab:vezja}
+\centering
+\small
+\begin{tabular}{lrrl}
+\toprule
+Vezje & Kubiti & Vhodi & Gradnja \\
+\midrule
+Toffoli & 3 & 8 & \texttt{ccx} \\
+Fredkin & 3 & 8 & \texttt{cswap} \\
+polni seštevalnik & 4 & 8 & 2 Toffoli + 2 CNOT \\
+Cuccaro (dvobitni) & 6 & 16 & 2 MAJ + CNOT + 2 UMA \\
+\midrule
+skupaj & & 40 & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Vsi kubiti začnejo v stanju $\ket{0}$.
+Vhod nastavimo z vrati X,
+nato sledita ukaz \texttt{barrier} in jedro vezja.
+Ukaz \texttt{barrier} prevajalniku prepreči,
+da bi vrata X združil z jedrom.
+Sicer bi lahko vezje poenostavil za konkreten vhod.
+Jedro je tako po prevajanju za vse vhode enako.
+Reverzibilno vezje vsak vhod preslika v natanko en izhod.
+Pričakovani izhod zato izračunamo klasično, iz pravilnostne tabele.
+Na idealnem simulatorju je vseh 40 vhodov dalo pravilen izhod.
+S tem smo preverili tudi vrstni red bitov v Qiskitu.
 
 \begin{figure}[htbp]
 \centering
-\begin{quantikz}
-\lstick{$\ket{0}$} & \gate{H} & \ctrl{1} & \meter{} \\
-\lstick{$\ket{0}$} & \qw      & \targ{}  & \meter{}
+\begin{quantikz}[row sep={0.75cm,between origins}, column sep=0.3cm]
+\lstick{$q_0\colon \ket{0}$} & \gate{X^{a}} \slice{} & \ctrl{1} & \ctrl{1} & \qw & \qw & \meter{} & \setwiretype{n} \rstick{$a$} \\
+\lstick{$q_1\colon \ket{0}$} & \gate{X^{b}} & \ctrl{2} & \targ{} & \ctrl{1} & \ctrl{1} & \meter{} & \setwiretype{n} \rstick{$a \oplus b$} \\
+\lstick{$q_2\colon \ket{0}$} & \gate{X^{c_\text{in}}} & \qw & \qw & \ctrl{1} & \targ{} & \meter{} & \setwiretype{n} \rstick{$s$} \\
+\lstick{$q_3\colon \ket{0}$} & \qw & \targ{} & \qw & \targ{} & \qw & \meter{} & \setwiretype{n} \rstick{$c_\text{out}$}
 \end{quantikz}
-\caption{[Vzorec: priprava in merjenje Bellovega stanja. Zamenjajte z npr.\ Toffolijevimi vrati ali polnim seštevalnikom.]}
-\label{g10:fig:vezje}
+\caption{Polni seštevalnik s pripravo vhoda.
+Vrata $X^{a}$ se izvedejo le, če je $a = 1$.
+Črtkana črta je ukaz \texttt{barrier}.
+Na izhodu je $s$ vsota, $c_\text{out}$ pa prenos.}
+\label{g10:fig:polni}
 \end{figure}
 
-[Kratke odseke kode lahko vključite z okoljem \texttt{lstlisting}, celotno kodo pa hranite v repozitoriju.]
+Prevajalnik (angl.\ transpiler) vezje prilagodi procesorju
+v šestih fazah~\cite{g10:qiskit_transpiler_stages}.
+Postavitev (angl.\ layout) določi,
+na katerem fizičnem kubitu bo logični kubit.
+Usmerjanje (angl.\ routing) doda vrata SWAP,
+kadar dvokubitna vrata delujejo na nepovezanih kubitih.
+Za postavitev in usmerjanje Qiskit uporablja
+algoritem SABRE~\cite{g10:li2019sabre}.
+Ta vrata SWAP izbira tako, da zmanjša razdaljo
+med kubiti naslednjih dvokubitnih vrat.
+Algoritem je naključen~\cite{g10:qiskit_transpiler_stages},
+zato ga prevajalnik požene večkrat
+in obdrži poskus z najmanj vrati SWAP
+(preverili smo v izvorni kodi Qiskita).
+Nato prevajalnik vezje prevede v osnovna vrata in optimizira.
+Višje ravni optimizacije dajo boljša vezja,
+a prevajanje traja dlje~\cite{g10:qiskit_optimization}.
+Ravni se razlikujejo takole:
 
-\begin{lstlisting}[language=Python, caption={[Vzorec: prevajanje vezja. Zamenjajte z odsekom iz svoje kode.]}, label={g10:lst:qiskit}]
-from qiskit.transpiler import generate_preset_pass_manager
+\begin{itemize}
+\item \textbf{Raven 0:}
+Logični kubit $i$ postavi na fizični kubit $i$,
+usmerja s \texttt{SabreSwap}.
+Faze optimizacije ni.
+\item \textbf{Raven 1:}
+Če trivialna postavitev potrebuje vrata SWAP,
+poišče postavitev brez njih (\texttt{VF2Layout}).
+Sicer uporabi algoritem SABRE~\cite{g10:li2019sabre} s 5 poskusi.
+Po usmerjanju izbere kubite z manjšimi napakami
+(\texttt{VF2PostLayout}).
+Nato združuje enokubitna vrata in odstranjuje pare inverznih vrat,
+dokler se vezje spreminja.
+\item \textbf{Raven 2:}
+Trivialne postavitve ne poskusi, SABRE ima 20 poskusov.
+Vezje krajša že pred postavitvijo,
+pri tem upošteva tudi komutativnost vrat.
+Bloke dvokubitnih vrat enkrat na novo sintetizira.
+Obdrži boljšo različico, predvsem po številu dvokubitnih vrat
+(\texttt{TwoQubit\allowbreak Peephole\allowbreak Optimization}).
+\item \textbf{Raven 3:}
+SABRE izvede dvakrat več iteracij.
+Ponovna sinteza blokov je v zanki,
+ki vrne najboljše najdeno vezje (\texttt{MinimumPoint}).
+Na koncu še enkrat izbere kubite z manjšimi napakami.
+\end{itemize}
 
-for level in range(4):
-    pm = generate_preset_pass_manager(optimization_level=level,
-                                      backend=backend, seed_transpiler=seed)
-    isa = pm.run(qc)
-\end{lstlisting}
+Da ločimo učinek postavitve in optimizacije,
+smo izvedli dve seriji.
+Raven 0 kubite postavi trivialno,
+višje ravni pa iščejo boljšo postavitev.
+Izboljšanje z ravni 0 na 1 je zato
+vsota boljše postavitve in optimizacije vrat.
+V seriji A postavitev izbere prevajalnik,
+v seriji B pa vse ravni dobijo isto začetno postavitev
+(\texttt{initial\_layout}).
+Prevajalnik takrat preskoči vse prehode za postavitev,
+tudi \texttt{VF2PostLayout}.
+Postavitev B smo za vsako vezje izbrali enkrat,
+s požrešnim postopkom, ki išče povezane kubite z najmanjšo vsoto
+napak vrat CZ in napak meritve.
+Tako fiksna postavitev nobene ravni ne kaznuje.
+Napake so iz kalibracije 19.~11.~2026 ob 8.37.
+
+Tudi najboljši poskus SABRE je odvisen od semena.
+Zato smo vsako kombinacijo vezja, serije in ravni
+prevedli z 10 semeni in rezultate povprečili.
+Raztros podamo s standardnim odklonom.
+
+Vezja, prevedena za \texttt{ibm\_marrakesh},
+smo pognali na treh platformah:
+\begin{itemize}
+\item \emph{Idealni simulator} (\texttt{AerSimulator} brez šuma) je kontrola.
+Pognali smo seme 0 s 1000 ponovitvami (angl.\ shots).
+Pričakujemo $P_\text{pravilno} = 1$.
+\item \emph{Šumni model} (\texttt{AerSimulator.from\_backend})
+vsebuje napake vrat, razpad kubitov in napake meritve
+iz kalibracije procesorja.
+Drugih pojavov, npr.\ presluha med kubiti, ne vsebuje.
+Pognali smo vse kombinacije,
+3200 vezij z 2000 ponovitvami.
+\item \emph{Kvantni procesor}: vsaka serija je ena naloga
+s 160 vezji ($40$ vhodov $\times\,4$ ravni) in 1000 ponovitvami.
+Ker je čas omejen, smo pognali le eno seme,
+tisto z mediano števila dvokubitnih vrat.
+Tako poženemo tipičen primer, ne najboljšega ali najslabšega.
+\end{itemize}
+Na procesorju smo izklopili dinamično razklapljanje
+(angl.\ dynamical decoupling)
+in naključno sukanje vrat (angl.\ twirling), zato
+da merimo le vpliv prevajalnika.
+
 
 \subsection{Metrike}
 \label{g10:sec:metrike}
 
-[Naštejte strukturne metrike (število kubitov, število dvokubitnih vrat, globina, skupno število vrat, čas prevajanja). Verjetnost pravilnega rezultata zapišite z enačbo~\eqref{g10:eq:ppravilno} in pojasnite oznake.]
+Na prevedenem vezju merimo število uporabljenih kubitov,
+število dvokubitnih vrat (CZ), globino,
+skupno število vrat in čas prevajanja (klic \texttt{pm.run}).
+Meritev in ukazov \texttt{barrier} ne štejemo.
+Glavna metrika je število dvokubitnih vrat.
+Ta imajo večjo napako in daljše trajanje kot enokubitna vrata.
+[Izhodišče (\enquote{pred}) je vezje, razgrajeno v vrata CNOT
+in enokubitna vrata, brez omejitev povezljivosti in optimizacije.]
+Metrike so za vse vhode istega vezja enake,
+kar smo preverili na vseh pognanih vezjih.
+Zato jih računamo na vezju z vhodom $0\ldots0$.
 
+Verjetnost pravilnega rezultata za eno vezje je
 \begin{equation}
-P_\text{pravilno} = \frac{1}{|V|} \sum_{v \in V} \frac{N_\text{pravilno}(v)}{N}
+P_\text{pravilno} = \frac{1}{|V|} \sum_{v \in V} \frac{N_\text{pravilno}(v)}{N} ,
 \label{g10:eq:ppravilno}
 \end{equation}
+kjer je $V$ množica vhodov vezja, $N$ število ponovitev
+in $N_\text{pravilno}(v)$ število ponovitev s pravilnim izhodom.
+Izhod je pravilen le, če se ujemajo vsi izmerjeni biti.
+Pri šumnem modelu rezultat povprečimo še čez semena.
+Standardna napaka na en vhod je $\sqrt{P(1-P)/N}$,
+kar je največ 1,1 odstotne točke pri $N = 2000$
+in 1,6 odstotne točke pri $N = 1000$.
 
-[Pojasnite, kako izračunate zmanjšanje števila vrat v \% in razliko v pravilnosti v odstotnih točkah.]
+Spremembo med ravnema $i$ in $j$ izračunamo kot
+\begin{equation}
+\Delta n_{i \to j} = \frac{\bar{n}_i - \bar{n}_j}{\bar{n}_i} \cdot 100~\% ,
+\qquad
+\Delta P_{i \to j} = \left( P_j - P_i \right) \cdot 100 ,
+\label{g10:eq:spremembe}
+\end{equation}
+kjer je $\bar{n}_i$ povprečno število dvokubitnih vrat na ravni $i$
+in $P_i$ verjetnost $P_\text{pravilno}$ na ravni $i$.
+$\Delta P$ je v odstotnih točkah,
+pozitivna vrednost pri obeh pomeni izboljšanje.
+Prvo hipotezo preverimo z $\Delta n_{0\to1}$ in $\Delta P_{0\to1}$,
+drugo z absolutnima vrednostma $\Delta n_{2\to3}$ in $\Delta P_{2\to3}$.
+Pragove (30~\%, 10~\% in 3 odstotne točke)
+smo določili že v prijavi teme in jih nismo spreminjali.
+[TODO: prijava ne določa praga za \enquote{opazno} izboljšanje
+pravilnosti v prvi hipotezi; določi merilo.]
+Za povprečje čez vezja najprej povprečimo števila vrat
+in $P_\text{pravilno}$, nato izračunamo spremembo.
 
 
 \section{Rezultati}
 \label{g10:sec:rezultati}
 
-[Rezultate predstavite s slikami, grafi in tabelami ter jih v besedilu razložite. Vsako sliko in tabelo omenite v besedilu, npr.\ tabela~\ref{g10:tab:primerjava}. Grafe shranjujte v poddirektoriju \texttt{img} v formatu PDF.]
-
-\begin{table}[htbp]
-\caption{[Primerjava z literaturo: število CNOT za Toffolijeva in Fredkinova vrata. Vpišite svoje vrednosti in navedite vire.]}
-\label{g10:tab:primerjava}
-\centering
-\begin{tabular}{lrr}
-\toprule
-Izvedba & Toffoli & Fredkin \\
-\midrule
-naša, raven [ ] & [ ] & [ ] \\
-literatura & [ ] & [ ] \\
-\bottomrule
-\end{tabular}
-\end{table}
+% TODO
+% TODO: pri primerjavi šumni model / procesor povej,
+% da je iz šumnega modela vzeto le seme, pognano na procesorju.
 
 
 \section{Razprava}
 \label{g10:sec:razprava}
 
-[Odgovorite na raziskovalno vprašanje in rezultat primerjajte s pričakovanim. Hipotezi izrecno potrdite ali zavrnite. Opišite omejitve: kaj vaši rezultati pokažejo in česa ne.]
+% TODO
 
 \subsection{Kaj ni delovalo}
 \label{g10:sec:neuspehi}
 
-[Opišite vsaj en poskus, ki ni uspel, kaj ste opazili in zakaj po vašem mnenju ni deloval.]
+% TODO
 
 
 \section{Zaključek}
 \label{g10:sec:zakljucek}
 
-[Povzemite glavni rezultat v nekaj stavkih in predlagajte, kako bi delo nadaljevali.]
+% TODO
 
 
 \section*{Doprinosi avtorjev}
 
-[Avtor je en sam: v enem stavku zapišite, da je pripravil izdelek in poročilo.]
+% TODO
 
 \section*{Izjava o uporabi generativne umetne inteligence}
 
-[Navedite orodja in za kaj ste jih uporabili. Npr. pomoč pri pisanju kode, lektoriranje ali iskanje virov.]
+% TODO
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Konec poglavja

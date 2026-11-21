@@ -65,42 +65,126 @@
 \maketitle
 
 \abstract{%
-% TODO: povzetek (napišem čisto na koncu)
+Preverili smo, kako raven optimizacije prevajalnika Qiskit (0--3)
+vpliva na število dvokubitnih vrat reverzibilnih vezij
+in na verjetnost pravilnega rezultata $P_\text{pravilno}$.
+Štiri vezja s 3 do 6 kubiti
+smo prevedli z 10 semeni prevajalnika.
+Za vse vhode smo jih pognali na šumnem modelu
+in na kvantnem procesorju \texttt{ibm\_marrakesh}.
+Z ravni 0 na 1 se število dvokubitnih vrat
+v povprečju zmanjša za 26,8~\%,
+$P_\text{pravilno}$ na procesorju pa se poveča za 11,2 odstotne točke.
+Na šumnem modelu je to povečanje le 1,8 odstotne točke.
+Ravni 2 in 3 se v številu vrat
+razlikujeta za največ 0,4~\%.
+Ko so kubiti pri vseh ravneh isti,
+prehod z ravni 0 na 1 na procesorju
+prinese le 1,5 odstotne točke.
+Na procesorju je torej izbira kubitov
+pomembnejša od razlik v številu vrat med ravnmi.
 }
 
 
 \section{Uvod}
 \label{g10:sec:uvod}
 
-% TODO: uvod (napišem po rezultatih in razpravi)
+Logična funkcija je reverzibilna,
+če ima enako število vhodov in izhodov
+in vsak vhod preslika v drugačen izhod~\cite{reversible:mraz}.
+Dva osnovna reverzibilna gradnika
+sta Toffolijeva in Fredkinova vrata.
+Toffolijeva vrata negirajo ciljni bit,
+če sta oba kontrolna bita 1.
+Fredkinova vrata zamenjata dva bita,
+če je kontrolni bit 1.
+Vsaka od obeh funkcij sama tvori
+poln funkcijski nabor~\cite{reversible:mraz}.
 
-% TODO: v uvod dodaj opis Toffolijevih in Fredkinovih vrat
-% ter poln funkcijski nabor (premaknjeno iz Metod). Prejšnje besedilo:
-% Toffolijeva vrata negirajo ciljni bit,
-% če sta oba kontrolna bita 1.
-% Fredkinova vrata zamenjata dva bita,
-% če je kontrolni bit 1.
-% Obe funkciji tvorita poln funkcijski nabor~\cite{reversible:mraz}.
+Kvantna vrata so unitarna in zato reverzibilna~\cite{nielsen2010}.
+Vsako klasično vezje lahko zamenjamo z reverzibilnim,
+zgrajenim iz Toffolijevih vrat.
+Ta so tudi veljavna kvantna vrata,
+saj bazna stanja preslikajo enako kot klasična,
+npr.\ stanje $\ket{110}$ v $\ket{111}$~\cite{nielsen2010}.
+Iz Toffolijevih vrat in vrat CNOT
+je zgrajen tudi Cuccarov kvantni seštevalnik~\cite{g10:cuccaro2004}.
+Če na vhod reverzibilnega vezja damo bazno stanje,
+je tudi izhod eno samo bazno stanje.
+Brez šuma je torej izhod natanko določen
+in ga poznamo iz pravilnostne tabele.
+Zato smo taka vezja izbrali za merjenje vpliva šuma.
 
-% TODO: splošni odstavek o prevajalniku premakni iz Metod
-% (razdelek g10:sec:poskusi, od "Prevajalnik (angl. transpiler)"
-% do "a prevajanje traja dlje") v uvod.
-% - V uvod: šest faz, postavitev in usmerjanje (angl. izraza
-%   ob prvi omembi), SABRE in izbira SWAP, prevod v osnovna vrata
-%   in optimizacija, višje ravni = boljša vezja, daljše prevajanje.
-% - V Metodah ostane stavek "Algoritem je naključen, zato ga
-%   prevajalnik požene večkrat in obdrži poskus z najmanj vrati
-%   SWAP (preverili smo v izvorni kodi Qiskita)." Prestavi ga
-%   k odstavku z 10 semeni (utemeljuje semena).
-% - Pred seznamom ravni dodaj: "Faze prevajalnika smo opisali
-%   v razdelku~\ref{g10:sec:uvod}. Ravni optimizacije se
-%   v Qiskit 2.6.2 razlikujejo takole:"
+Današnji kvantni procesorji so namreč šumni.
+Preskill jih uvršča v obdobje NISQ
+(angl.\ Noisy Intermediate-Scale Quantum).
+Leta 2018 je bila napaka dvokubitnih vrat
+tudi na najboljših procesorjih nad 0,1~\%,
+pogosto pa precej večja~\cite{preskill2018}.
+Že ena napaka kjerkoli v vezju lahko pokvari rezultat.
+Šum zato omejuje velikost vezij,
+ki jih lahko zanesljivo izvedemo~\cite{preskill2018}.
+Poleg tega kubiti niso povezani vsak z vsakim.
+Dvokubitna vrata lahko neposredno izvedemo
+le na povezanih kubitih~\cite{g10:qiskit_transpiler_stages}.
+
+Vezje mora zato pred izvedbo prilagoditi
+prevajalnik (angl.\ transpiler).
+Prevajalnik knjižnice Qiskit vezje predela v več prehodih,
+da ustreza naboru ukazov procesorja~\cite{qiskit2024}.
+Dokumentacija deli prevajanje
+na šest faz~\cite{g10:qiskit_transpiler_stages}.
+Postavitev (angl.\ layout) določi,
+na katerem fizičnem kubitu bo logični kubit.
+Usmerjanje (angl.\ routing) doda vrata SWAP,
+kadar dvokubitna vrata delujejo na nepovezanih kubitih.
+Za postavitev in usmerjanje Qiskit uporablja
+algoritem SABRE~\cite{g10:li2019sabre}.
+Ta vrata SWAP izbira tako, da zmanjša razdaljo
+med kubiti naslednjih dvokubitnih vrat.
+Nato prevajalnik vezje prevede v osnovna vrata procesorja
+in ga optimizira.
+Pri tem lahko upošteva podatke o procesorju,
+npr.\ napake vrat~\cite{qiskit2024}.
+Kako močno vezje optimizira, določa
+raven optimizacije (angl.\ optimization level) od 0 do 3.
+Višje ravni dajo boljša vezja,
+a prevajanje traja dlje~\cite{g10:qiskit_optimization}.
+
+Manj dvokubitnih vrat naj bi pomenilo manj napak.
+Ni pa jasno, koliko pri tem pomaga posamezna raven,
+če so vezja majhna in tečejo na pravem procesorju.
+Višje ravni namreč ne spremenijo le vrat,
+ampak izberejo tudi drugo postavitev~\cite{g10:qiskit_optimization}.
+Izboljšanje je zato lahko posledica boljših kubitov,
+ne optimizacije vrat.
+To preverimo na štirih reverzibilnih vezjih
+s 3 do 6 kubiti:
+na Toffolijevih in Fredkinovih vratih, polnem seštevalniku
+in dvobitnem Cuccarovem seštevalniku.
 
 \begin{svgraybox}
-\textbf{Raziskovalno vprašanje.} Kako vpliva raven optimizacije prevajalnika Qiskit (0--3) na število dvokubitnih vrat reverzibilnih vezij in kako to vpliva na verjetnost pravilnega rezultata na šumnem procesorju IBM?
+\textbf{Raziskovalno vprašanje.} Kako vpliva raven 
+optimizacije prevajalnika Qiskit (0--3) na 
+število dvokubitnih vrat reverzibilnih vezij 
+in kako to vpliva na verjetnost pravilnega rezultata 
+na šumnem procesorju IBM?
 
-\textbf{Pričakovani rezultat.} Prehod z ravni 0 na raven 1 zmanjša število dvokubitnih vrat za več kot 30~\% in opazno izboljša pravilnost. Razlika med ravnema 2 in 3 je majhna: manj kot 10~\% v številu dvokubitnih vrat in manj kot 3 odstotne točke v pravilnosti.
+\textbf{Pričakovani rezultat.} Prehod z ravni 0 na raven 1 zmanjša 
+število dvokubitnih vrat za več kot 30~\% in izboljša 
+pravilnost za več kot 3 odstotne točke. 
+Razlika med ravnema 2 in 3 je majhna: manj 
+kot 10~\% v številu dvokubitnih vrat in manj kot 3 
+odstotne točke v pravilnosti.
 \end{svgraybox}
+
+V razdelku~\ref{g10:sec:metode} opišemo vezja,
+nastavitve prevajalnika in platforme, na katerih smo jih pognali.
+V razdelku~\ref{g10:sec:rezultati} podamo število dvokubitnih vrat
+in $P_\text{pravilno}$ po ravneh.
+V razdelku~\ref{g10:sec:razprava} odgovorimo na raziskovalno vprašanje
+in opišemo omejitve,
+v razdelku~\ref{g10:sec:zakljucek} pa povzamemo glavne ugotovitve.
 
 
 \section{Metode}
@@ -201,24 +285,8 @@ Na izhodu je $s$ vsota, $c_\text{out}$ pa prenos.}
 \label{g10:fig:polni}
 \end{figure}
 
-Prevajalnik (angl.\ transpiler) vezje prilagodi procesorju
-v šestih fazah~\cite{g10:qiskit_transpiler_stages}.
-Postavitev (angl.\ layout) določi,
-na katerem fizičnem kubitu bo logični kubit.
-Usmerjanje (angl.\ routing) doda vrata SWAP,
-kadar dvokubitna vrata delujejo na nepovezanih kubitih.
-Za postavitev in usmerjanje Qiskit uporablja
-algoritem SABRE~\cite{g10:li2019sabre}.
-Ta vrata SWAP izbira tako, da zmanjša razdaljo
-med kubiti naslednjih dvokubitnih vrat.
-Algoritem je naključen~\cite{g10:qiskit_transpiler_stages},
-zato ga prevajalnik požene večkrat
-in obdrži poskus z najmanj vrati SWAP
-(preverili smo v izvorni kodi Qiskita).
-Nato prevajalnik vezje prevede v osnovna vrata in optimizira.
-Višje ravni optimizacije dajo boljša vezja,
-a prevajanje traja dlje~\cite{g10:qiskit_optimization}.
-Ravni se razlikujejo takole:
+Faze prevajalnika smo opisali v razdelku~\ref{g10:sec:uvod}.
+Ravni optimizacije se v Qiskit 2.6.2 razlikujejo takole:
 
 \begin{itemize}
 \item \textbf{Raven 0:}
@@ -261,8 +329,13 @@ napak vrat CZ in napak meritve.
 Tako fiksna postavitev nobene ravni ne kaznuje.
 Napake so iz kalibracije 19.~11.~2026 ob 8.37.
 
-Vsako kombinacijo vezja, serije in ravni
-smo prevedli z 10 semeni prevajalnika
+Algoritem SABRE je naključen~\cite{g10:qiskit_transpiler_stages},
+zato ga prevajalnik požene večkrat
+in obdrži poskus z najmanj vrati SWAP
+(preverili smo v izvorni kodi Qiskita).
+Rezultat je kljub temu odvisen od semena.
+Zato smo vsako kombinacijo vezja, serije in ravni
+prevedli z 10 semeni prevajalnika
 in rezultate povprečili.
 Raztros podamo s standardnim odklonom.
 
@@ -414,6 +487,9 @@ ki jo izbere prevajalnik.
 Tabela~\ref{g10:tab:pravilnost} podaja $P_\text{pravilno}$
 na šumnem modelu in na kvantnem procesorju.
 Nalogi na procesorju sta tekli 19.~11.~2026.
+ID naloge za serijo A je \texttt{dbvdljmps3fc73bkae10},
+za serijo B pa \texttt{dbvdtjtarooc73flds5g}.
+Surovi histogrami obeh nalog so v repozitoriju.
 
 \begin{table}[htbp]
 \caption{Verjetnost pravilnega rezultata $P_\text{pravilno}$ v \%.
@@ -548,13 +624,15 @@ na katerih kubitih vezje teče.
 
 Tabela~\ref{g10:tab:spremembe} podaja spremembe
 iz enačbe~\eqref{g10:eq:spremembe}.
-Prva hipoteza zahteva več kot 30~\% manj dvokubitnih vrat
-pri prehodu z ravni 0 na 1.
-Ta prag preseže le polni seštevalnik (42,4~\%),
+Prva hipoteza pri prehodu z ravni 0 na 1 zahteva
+več kot 30~\% manj dvokubitnih vrat
+in več kot 3~o.\,t. večjo pravilnost.
+Prag za vrata preseže le polni seštevalnik (42,4~\%),
 povprečje je 26,8~\%.
-Pravilnost se izboljša na obeh platformah,
-na šumnem modelu za 1,8~o.\,t.,
-na procesorju pa za 11,2~o.\,t.
+Na procesorju prag za pravilnost presežejo vsa vezja
+(3,8 do 15,9~o.\,t., povprečje 11,2~o.\,t.).
+Na šumnem modelu ga preseže le Cuccaro (3,5~o.\,t.),
+povprečje je 1,8~o.\,t.
 
 \begin{table}[htbp]
 \caption{Spremembe med ravnema v seriji A
@@ -597,31 +675,130 @@ povprečje čez vezja je $-0{,}5$~o.\,t.
 \section{Razprava}
 \label{g10:sec:razprava}
 
-% TODO
+Raven optimizacije močno vpliva na število dvokubitnih vrat,
+a le do ravni 2.
+Raven 0 število vrat približno podvoji,
+ravni 1 in 2 ga zmanjšata,
+raven 3 pa ga ne zmanjša več.
+Pri ravni 1 večji del izboljšanja prinese
+boljša postavitev, ki zahteva manj vrat SWAP.
+Ko je postavitev pri vseh ravneh enaka (serija B),
+se število vrat najbolj zmanjša šele na ravni 2,
+v povprečju s 27,0 na 21,3.
+
+Na šumnem modelu je $P_\text{pravilno}$ odvisen od števila vrat
+(slika~\ref{g10:fig:vrata_P}),
+razlike med ravnmi pa so majhne.
+Na procesorju skok z ravni 0 na 1 znaša 
+11,2~o.\,t. v primerjavi z 1,8~o.\,t. na šumnem modelu.
+V seriji B, kjer so kubiti pri vseh ravneh isti,
+isti prehod prinese le 1,5~o.\,t.
+Raven 0 uporabi fizične kubite $0, 1, 2, \ldots$,
+višje ravni pa izberejo kubite z manjšimi napakami.
+Na procesorju je torej izbira kubitov
+pomembnejša od razlik v številu vrat med ravnmi.
+
+Šumni model ne simulira zanesljivo delovanja kubitov
+na procesorju.
+Pri Cuccaru v seriji B šumni model da
+$P_\text{pravilno}$ od 74,4 do 79,2~\%,
+procesor pri isti kalibraciji pa le 26,1 do 30,6~\%.
+Vzroka iz naših podatkov ne moremo določiti.
+Lahko gre za pojave, ki jih model ne vsebuje,
+npr.\ presluh, ali za spremembo kubitov po kalibraciji.
+Na iste podatke se pri izbiri kubitov opira
+tudi prevajalnik, zato njegova izbira ni nujno najboljša.
+
+Prva hipoteza za število vrat ne drži.
+Povprečno zmanjšanje (26,8~\%) je pod pragom 30~\%,
+preseže ga le polni seštevalnik.
+Del o pravilnosti drži na procesorju,
+kjer vsa vezja presežejo prag 3~o.\,t.
+Na šumnem modelu ne drži (povprečje 1,8~o.\,t.).
+Prva hipoteza torej drži le delno.
+
+Druga hipoteza za število vrat drži,
+razlika med ravnema 2 in 3 je največ 0,4~\%.
+Za pravilnost drži na šumnem modelu
+in v povprečju na procesorju ($-0{,}5$~o.\,t.).
+Ne drži pa pri polnem seštevalniku na procesorju ($-4{,}1$~o.\,t.).
+Ravni imata tam enako število vrat,
+zato razlika verjetno izvira iz izbire kubitov.
+Raven 3 pri takih vezjih
+torej ne prinese bistvene izboljšave.
+
+Naši rezultati kažejo,
+da šum že majhna aritmetična vezja opazno pokvari.
+To se ujema z ugotovitvijo, da šum omejuje velikost vezij,
+ki jih lahko zanesljivo izvedemo~\cite{preskill2018}.
+
+Rezultati imajo več omejitev.
+Veljajo za Qiskit 2.6.2, procesor \texttt{ibm\_marrakesh}
+in majhna vezja s 3 do 6 kubiti.
+Ali razlika med ravnema 2 in 3
+ostane majhna tudi pri večjih vezjih, nismo preverili.
+Na procesorju smo vsako serijo pognali le enkrat,
+z enim semenom.
+Razlik nekaj o.\,t. med ravnmi 1--3
+zato ne moremo zanesljivo pripisati ravni optimizacije.
+Šumni model je iz kalibracije naloge B (ob 12.13),
+za nalogo A pa je veljala kalibracija ob 11.57.
+Ker smo izklopili dinamično razklapljanje in sukanje vrat,
+rezultati veljajo le za vezja brez teh tehnik.
 
 \subsection{Kaj ni delovalo}
 \label{g10:sec:neuspehi}
 
-% TODO
+Kubite za serijo B smo izbrali po najmanjših napakah
+iz kalibracije, da fiksna postavitev
+ne bi kaznovala nobene ravni.
+Na procesorju to pri seštevalnikih ni uspelo.
+Cuccaro v seriji B doseže le 26,1 do 30,6~\%,
+v seriji A na ravneh 1--3 pa 60,4 do 62,4~\%.
+Slabši je celo od ravni 0 v seriji A (56,6~\%).
+Polni seštevalnik v seriji B doseže 75,6 do 78,8~\%,
+v seriji A na ravneh 1--3 pa 85,6 do 89,6~\%.
+Po našem mnenju podatki iz kalibracije
+ne opišejo dejanskega stanja teh kubitov
+(razdelek~\ref{g10:sec:razprava}).
+
+Postavitve serije B smo sprva izbrali iz dveh virov.
+Za strukturne metrike smo uporabili napake
+iz posnetka \texttt{FakeMarrakesh},
+za zagone pa kalibracijo procesorja \texttt{ibm\_marrakesh}.
+Napake v virih se razlikujejo, zato je postopek
+izbral druge kubite, npr.\ za Toffolija 12, 13 in 14
+namesto 20, 21 in 22.
+Število dvokubitnih vrat v strukturnih metrikah
+se je zato pri 63 od 160 kombinacij
+vezja, ravni in semena razlikovalo od vezij,
+ki so dejansko tekla.
+Napako smo popravili tako, da strukturne metrike
+uporabijo iste postavitve kot zagoni.
 
 
 \section{Zaključek}
 \label{g10:sec:zakljucek}
 
-% TODO
+Pri majhnih reverzibilnih vezjih
+največ prinese prehod z ravni 0 na 1.
+Število dvokubitnih vrat se zmanjša za 26,8~\%,
+$P_\text{pravilno}$ na procesorju pa se poveča za 11,2~o.\,t.
+Večji del izboljšanja prinese boljša postavitev,
+ne optimizacija vrat.
+Raven 3 v primerjavi z ravnjo 2
+ne prinese bistvene izboljšave.
 
+Delo bi nadaljevali z večjimi vezji,
+npr.\ seštevalniki z več biti.
+Tako bi preverili, ali razlika med ravnema 2 in 3
+ostane majhna.
+Na procesorju bi poskuse ponovili z več semeni
+in ob različnih kalibracijah.
 
-\section*{Doprinosi avtorjev}
-
-% TODO
 
 \section*{Izjava o uporabi generativne umetne inteligence}
 
-% TODO
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Konec poglavja
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \bibliographystyle{unsrtnat}   % izpiše tudi DOI in URL
 \bibliography{references}

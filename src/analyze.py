@@ -10,15 +10,16 @@ Vhodne datoteke (vsaka skripta piše v svojo podmapo results/<skripta>/):
 Če katere od zadnjih štirih datotek ni (npr. pred zagonom na procesorju), ustrezni del analize preskočimo.
 
 Izhodne datoteke:
-  results/analyze/tabela1_strukturne.csv (+ .tex)  strukturne metrike po ravneh
-  results/analyze/tabela2_pravilnost.csv (+ .tex)  P_pravilno po ravneh in platformah
-  results/analyze/tabela3_hipoteze.csv   (+ .tex)  preverjanje obeh hipotez
+  results/analyze/tabela1_strukturne.csv (+ .md)  strukturne metrike po ravneh
+  results/analyze/tabela2_pravilnost.csv (+ .md)  P_pravilno po ravneh in platformah
+  results/analyze/tabela3_hipoteze.csv   (+ .md)  preverjanje obeh hipotez
   figures/graf1_dvokubitna_vrata.pdf       dvokubitna vrata po ravneh
   figures/graf2_pravilnost.pdf             P_pravilno: šumni model in procesor
-  figures/graf3_vrata_proti_P.pdf          dvokubitna vrata proti P_pravilno
+  figures/graf3_vrata_proti_P_v3.pdf       dvokubitna vrata proti P_pravilno (nelinearni osi)
   figures/graf4_serija_A_B.pdf             serija A proti seriji B
 
-Datoteke .tex vsebujejo samo okolje tabular. V poročilu jih vstavimo v okolje table z \\input{...}.
+Datoteke .md so iste tabele za pregled (predogled v VS Code, GitHub), urejene kot tabele v poročilu:
+seriji A in B drug ob drugi, ena decimalka, P v %, pri spremembah pozitivno = izboljšanje.
 
 Grafi in tabele nastanejo SAMO iz datotek v results/, zato jih lahko kadarkoli ponovno narišemo brez novih simulacij.
 
@@ -27,13 +28,15 @@ Zagon:
 """
 
 import argparse
+from decimal import Decimal, ROUND_HALF_UP
 from pathlib import Path
 
 import matplotlib
 matplotlib.use("Agg")          # risanje v datoteko, brez okna
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
-from matplotlib.ticker import MaxNLocator
+from matplotlib.ticker import FixedLocator, FuncFormatter, MaxNLocator, NullFormatter, NullLocator
+import numpy as np
 import pandas as pd
 
 RESULTS = Path(__file__).resolve().parent.parent / "results"
@@ -192,22 +195,42 @@ def table_structural(st):
     return sort_circuits(table)
 
 
-def latex_structural(table, serija="A"):
+def dec1(x):
     """
-    LaTeX: vrstice = vezje x metrika, stolpci = pred in ravni 0-3. Vrednosti so povprečja čez semena (serija A).
+    Zaokroži na eno decimalko, polovice navzgor (1,65 -> 1,7; 15,25 -> 15,3), kot v poročilu.
+    Sam f"{x:.1f}" bi 1.6499999 (napaka zapisa 1,65) in 15,25 zaokrožil na 1,6 in 15,2.
     """
-    cols = ["pred"] + [str(l) for l in LEVELS]
-    rows = []
-    for name in CIRCUITS:
-        t = table[(table["vezje"] == name) & (table["serija"].isin([serija, "-"]))]
-        t = t.set_index("raven")
-        for metric, label in [("dvokubitna_povp", "dvokubitna vrata"), ("globina_povp", "globina")]:
-            row = {"Vezje": CIRCUIT_LABELS[name], "Metrika": label}
-            for c in cols:
-                row[c] = f"{t.loc[c, metric]:.1f}" if c in t.index else "--"
-            rows.append(row)
-    df = pd.DataFrame(rows).rename(columns={"pred": "pred", **{str(l): f"raven {l}" for l in LEVELS}})
-    return df.to_latex(index=False, escape=False, column_format="llrrrrr")
+    return Decimal(str(round(float(x), 9))).quantize(Decimal("0.1"), rounding=ROUND_HALF_UP)
+
+
+def md_table(rows, n_text=1):
+    """Seznam vrstic (slovarji z enakimi ključi) -> tabela Markdown. Prvih n_text stolpcev je poravnanih levo."""
+    head = list(rows[0])
+    align = [":--"] * n_text + ["--:"] * (len(head) - n_text)
+    lines = [head, align] + [[str(r[h]) for h in head] for r in rows]
+    return "\n".join("| " + " | ".join(line) + " |" for line in lines) + "\n"
+
+
+def md_structural(table):
+    """
+    Markdown: vrstice = vezja in povprečje čez vezja, stolpci = pred ter ravni 0-3 v seriji A in B.
+    Vrednosti so povprečja čez semena (prva tabela je enaka tabeli g10:tab:vrata v poročilu).
+    """
+    cols = pd.MultiIndex.from_tuples([("-", "pred")] + [(s, str(l)) for s in "AB" for l in LEVELS])
+    heads = ["pred"] + [f"{s}{l}" for s in "AB" for l in LEVELS]
+    t = table.assign(vezje=table["vezje"].astype(str))
+    labels = {**CIRCUIT_LABELS, "povprecje": "povprečje"}
+    out = ["# Tabela 1: strukturne metrike", "",
+           "Povprečje čez 10 semen. A0 = serija A, raven 0. Vrstica povprečje je povprečje čez vezja.", ""]
+    for metric, title, scale in [("dvokubitna_povp", "Dvokubitna vrata", 1), ("globina_povp", "Globina", 1),
+                                 ("st_vrat_povp", "Vsa vrata", 1), ("cas_s_povp", "Čas prevajanja [ms]", 1000)]:
+        w = t.pivot(index="vezje", columns=["serija", "raven"], values=metric).reindex(index=CIRCUITS, columns=cols)
+        w = w.astype(float) * scale
+        w.loc["povprecje"] = w.mean()
+        rows = [{"Vezje": labels[v], **{h: "–" if pd.isna(x) else f"{dec1(x):.1f}" for h, x in zip(heads, w.loc[v])}}
+                for v in w.index]
+        out += [f"## {title}", "", md_table(rows)]
+    return "\n".join(out)
 
 
 # ---------------------------------------------------------------------
@@ -245,21 +268,27 @@ def table_correctness(ideal, noisy, hw):
     return sort_circuits(table), runs
 
 
-def latex_correctness(table, serija="A"):
-    """LaTeX: vrstice = vezje x platforma, stolpci = ravni 0-3."""
+def md_correctness(table):
+    """Markdown: P_pravilno v %, vrstice = vezje x platforma, stolpci = ravni 0-3 v seriji A in B."""
     order = [p for p in PLATFORM_LABELS if p in set(table["platforma"])]
+    P = table.assign(vezje=table["vezje"].astype(str)).set_index(["vezje", "platforma", "serija", "raven"])["P_povp"]
     rows = []
     for name in CIRCUITS:
         for plat in order:
-            t = table[(table["vezje"] == name) & (table["platforma"] == plat) & (table["serija"] == serija)]
-            t = t.set_index("raven")
-            if t.empty:
-                continue
             row = {"Vezje": CIRCUIT_LABELS[name], "Platforma": PLATFORM_LABELS[plat]}
-            for l in LEVELS:
-                row[f"raven {l}"] = f"{t.loc[l, 'P_povp']:.3f}" if l in t.index else "--"
+            for s in "AB":
+                for l in LEVELS:
+                    k = (name, plat, s, l)
+                    row[f"{s}{l}"] = f"{dec1(100 * P[k]):.1f}" if k in P.index else "–"
             rows.append(row)
-    return pd.DataFrame(rows).to_latex(index=False, escape=False, column_format="llrrrr")
+    out = ["# Tabela 2: verjetnost pravilnega rezultata P_pravilno [%]", "",
+           "Šumni model: povprečje čez 10 semen. Procesor: eno seme. A0 = serija A, raven 0.", "",
+           md_table(rows, n_text=2)]
+    if "sumni_model_isto_seme" in order:
+        out += ["Opomba: »šumni model« je povprečje čez 10 semen prevajalnika (0–9). "
+                "»šumni model (seme kot na procesorju)« ni povprečje, ampak samo eno seme prevajalnika, "
+                "isto kot je bilo uporabljeno na pravem procesorju IBM. Šumni model je v obeh vrsticah isti.", ""]
+    return "\n".join(out)
 
 
 # ---------------------------------------------------------------------
@@ -317,6 +346,12 @@ def table_hypotheses(struct_table, corr_table):
     num = [c for c in df.columns if c not in ("serija", "platforma", "vezje")]
     avg = df.groupby(["serija", "platforma"])[num].mean().reset_index()
     avg["vezje"] = "povprecje"
+    # Kot v Metodah: najprej povprečimo števila vrat in P čez vezja, nato izračunamo spremembo.
+    # (Povprečje odstotkov bi dalo drugačen rezultat; pri P je oboje enako, pri vratih ne.)
+    avg["zmanjsanje_0_1_pct"] = (avg["vrata_0"] - avg["vrata_1"]) / avg["vrata_0"] * 100
+    avg["razlika_2_3_pct"] = (avg["vrata_2"] - avg["vrata_3"]) / avg["vrata_2"] * 100
+    avg["razlika_P_0_1_pt"] = (avg["P_1"] - avg["P_0"]) * 100
+    avg["razlika_P_2_3_pt"] = (avg["P_3"] - avg["P_2"]) * 100
     df = pd.concat([df, avg], ignore_index=True)
 
     df["H1_vrata"] = df["zmanjsanje_0_1_pct"] > H1_GATES_PCT
@@ -330,28 +365,40 @@ def table_hypotheses(struct_table, corr_table):
 
 def signed(x):
     """Število z obveznim predznakom, brez "-0.0" (npr. +17.7, -25.0, 0.0)."""
-    s = f"{x:+.1f}"
+    s = f"{dec1(x):+.1f}"
     return "0.0" if s in ("+0.0", "-0.0") else s
 
 
-def latex_hypotheses(df, serija="A"):
-    """LaTeX: kratka tabela s spremembami in odločitvijo o hipotezah."""
+def md_hypotheses(df):
+    """
+    Markdown: spremembe med ravnema po enačbi v Metodah, pozitivno = izboljšanje.
+    Ena tabela za vsako serijo (serija A je enaka tabeli g10:tab:spremembe v poročilu) in odločitvi o hipotezah.
+    """
     labels = {**CIRCUIT_LABELS, "povprecje": "povprečje"}
-    t = df[df["serija"] == serija]
-    rows = []
-    for _, r in t.iterrows():
-        rows.append({
-            "Vezje": labels[r["vezje"]],
-            "Platforma": PLATFORM_LABELS[r["platforma"]],
-            # sprememba vrat: negativno = manj vrat na višji ravni
-            r"vrata $0\to1$ [\%]": signed(-r["zmanjsanje_0_1_pct"]),
-            r"$P$ $0\to1$ [o.\,t.]": signed(r["razlika_P_0_1_pt"]),
-            r"vrata $2\to3$ [\%]": signed(-r["razlika_2_3_pct"]),
-            r"$P$ $2\to3$ [o.\,t.]": signed(r["razlika_P_2_3_pt"]),
-            "H1 (vrata)": "da" if r["H1_vrata"] else "ne",
-            "H2": "da" if r["H2"] else "ne",
-        })
-    return pd.DataFrame(rows).to_latex(index=False, escape=False, column_format="llrrrrcc")
+    short = {"sumni_model": "š", "procesor": "p"}
+    out = ["# Tabela 3: preverjanje hipotez", "",
+           "Δn v %, ΔP v odstotnih točkah, pozitivno = izboljšanje. "
+           "š = šumni model (povprečje čez semena), p = procesor. "
+           "Pri povprečju je Δn izračunan iz povprečnih števil vrat.", "",
+           f"H1 vrata: Δn 0→1 nad {H1_GATES_PCT} %. "
+           f"H2: |Δn 2→3| pod {H2_GATES_PCT} % in |ΔP 2→3| pod {H2_P_PT} o. t.", ""]
+    for serija in ["A", "B"]:
+        t = df[df["serija"] == serija].set_index(["vezje", "platforma"])
+        plats = [p for p in short if p in t.index.get_level_values("platforma")]
+        if not plats:
+            continue
+        rows = []
+        for v in CIRCUITS + ["povprecje"]:
+            g = t.loc[(v, plats[0])]          # število vrat je za vse platforme enako
+            row = {"Vezje": labels[v], "Δn 0→1": signed(g["zmanjsanje_0_1_pct"])}
+            row.update({f"ΔP {short[p]} 0→1": signed(t.loc[(v, p), "razlika_P_0_1_pt"]) for p in plats})
+            row["Δn 2→3"] = signed(g["razlika_2_3_pct"])
+            row.update({f"ΔP {short[p]} 2→3": signed(t.loc[(v, p), "razlika_P_2_3_pt"]) for p in plats})
+            row["H1 vrata"] = "da" if g["H1_vrata"] else "ne"
+            row.update({f"H2 {short[p]}": "da" if t.loc[(v, p), "H2"] else "ne" for p in plats})
+            rows.append(row)
+        out += [f"## Serija {serija}", "", md_table(rows)]
+    return "\n".join(out)
 
 
 # ---------------------------------------------------------------------
@@ -421,30 +468,53 @@ def graf3_scatter(runs, out):
     Razsevni diagram: število dvokubitnih vrat proti P_pravilno.
     Ena točka = en zagon (P povprečen čez vhode). Barva in oblika točke = vezje,
     polna točka = šumni model, prazna = procesor.
+    Na linearnih oseh so majhna vezja (malo vrat, P blizu 1) zbita v zgornjem levem kotu, zato:
+      os x je logaritemska,
+      os y ima skalo z = -log10(1 - P): vsak enak korak navzgor pomeni pol manjšo napako,
+      zato je razdalja od 80 % do 90 % enaka kot od 90 % do 95 %.
+    Pri majhni napaki vrat eps je 1 - P približno n * eps, zato točke ležijo približno na premici.
     """
-    fig, ax = plt.subplots(figsize=(6.3, 3.0))
+    P_MAX = 0.98     # zgornja meja osi; pri 100 % bi bila skala neskončna
+    # širina 4.6 palca = širina besedila v zborniku (117 mm), da pisava ni pomanjšana
+    fig, ax = plt.subplots(figsize=(4.6, 2.4))
     for name in CIRCUITS:
         for plat, filled in [("sumni_model", True), ("procesor", False)]:
             t = runs[(runs["vezje"] == name) & (runs["platforma"] == plat)]
+            over = t["P"] > P_MAX
+            if over.any():
+                print(f"  POZOR: graf3: {over.sum()} zagonov ({name}, {plat}) s P nad {P_MAX:.0%} ni narisanih.")
+                t = t[~over]
             if t.empty:
                 continue
             color = CIRCUIT_COLORS[name]
-            ax.scatter(t["st_dvokubitnih"], t["P"], marker=CIRCUIT_MARKERS[name], s=16 if filled else 30,
+            ax.scatter(t["st_dvokubitnih"], t["P"], marker=CIRCUIT_MARKERS[name], s=10 if filled else 24,
                        facecolors=color if filled else "none", edgecolors="white" if filled else color,
-                       linewidths=0.4 if filled else 1.0, alpha=0.75 if filled else 1.0)
+                       linewidths=0.3 if filled else 1.0, alpha=0.6 if filled else 1.0)
     ax.grid(True, axis="both")
+
+    ax.set_xscale("log")
+    ax.set_xlim(5, 100)
+    ax.xaxis.set_major_locator(FixedLocator([5, 10, 20, 50, 100]))
+    ax.xaxis.set_major_formatter(FuncFormatter(lambda x, _: f"{x:g}"))
+    ax.xaxis.set_minor_formatter(NullFormatter())
+    # skala -log10(1 - P) in njen inverz; clip, da P = 1 (izven osi) ne da deljenja z 0
+    ax.set_yscale("function", functions=(lambda p: -np.log10(1 - np.clip(p, 0, 1 - 1e-9)),
+                                         lambda z: 1 - 10 ** (-z)))
+    ax.set_ylim(0, P_MAX)
+    ax.yaxis.set_major_locator(FixedLocator([0.2, 0.5, 0.8, 0.9, 0.95, 0.98]))
+    ax.yaxis.set_major_formatter(FuncFormatter(lambda y, _: f"{100 * y:g} %"))
+    ax.yaxis.set_minor_locator(NullLocator())
     ax.set_xlabel("Število dvokubitnih vrat (prevedeno vezje)")
     ax.set_ylabel(r"$P_\mathrm{pravilno}$")
-    ax.set_ylim(0, 1.0)
 
-    # legenda: vezja (barva + oblika) in platformi (polna / prazna točka)
     handles = [Line2D([], [], linestyle="none", marker=CIRCUIT_MARKERS[c], markerfacecolor=CIRCUIT_COLORS[c], markeredgecolor="white", markersize=6, label=CIRCUIT_LABELS[c]) for c in CIRCUITS]
     handles.append(Line2D([], [], linestyle="none", marker="o", markerfacecolor="#6b6a65", markeredgecolor="white", markersize=6, label="šumni model"))
     if "procesor" in set(runs["platforma"]):
         handles.append(Line2D([], [], linestyle="none", marker="o", markerfacecolor="none", markeredgecolor="#6b6a65", markersize=6, label="procesor"))
-    ax.legend(handles=handles, loc="upper right", fontsize=7)
+    # spodaj levo ni točk (majhna vezja imajo velik P), zato legenda tam ne prekrije podatkov
+    ax.legend(handles=handles, loc="lower left", ncol=2, fontsize=7)
     fig.tight_layout()
-    fig.savefig(out / "graf3_vrata_proti_P.pdf")
+    fig.savefig(out / "graf3_vrata_proti_P_v3.pdf")
     plt.close(fig)
 
 
@@ -520,7 +590,7 @@ def main():
     # --- tabela 1 in graf 1: samo strukturne metrike ---
     struct_table = table_structural(st)
     struct_table.to_csv(res / "tabela1_strukturne.csv", index=False)
-    (res / "tabela1_strukturne.tex").write_text(latex_structural(struct_table), encoding="utf-8")
+    (res / "tabela1_strukturne.md").write_text(md_structural(struct_table), encoding="utf-8")
     graf1_gates(struct_table, fig_dir)
     print("Tabela 1 in graf 1: končano")
 
@@ -531,12 +601,12 @@ def main():
     # --- tabela 2: P_pravilno ---
     corr_table, runs = table_correctness(ideal, noisy, hw)
     corr_table.to_csv(res / "tabela2_pravilnost.csv", index=False)
-    (res / "tabela2_pravilnost.tex").write_text(latex_correctness(corr_table), encoding="utf-8")
+    (res / "tabela2_pravilnost.md").write_text(md_correctness(corr_table), encoding="utf-8")
 
     # --- tabela 3: hipoteze ---
     hyp = table_hypotheses(struct_table, corr_table)
     hyp.to_csv(res / "tabela3_hipoteze.csv", index=False)
-    (res / "tabela3_hipoteze.tex").write_text(latex_hypotheses(hyp), encoding="utf-8")
+    (res / "tabela3_hipoteze.md").write_text(md_hypotheses(hyp), encoding="utf-8")
     print("Tabeli 2 in 3: končano")
 
     # --- grafi 2-4 ---

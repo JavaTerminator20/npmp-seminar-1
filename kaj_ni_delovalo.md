@@ -14,3 +14,20 @@
   in vhod `"000"` pretvoril v število `0` (enako `pricakovano`).
 - Rešitev: obstoječo datoteko beremo z `pd.read_csv(..., dtype=str)`.
   Tudi `analyze.py` mora stolpca `vhod` in `pricakovano` brati kot niz.
+
+## 21. 11. 2026 – različne postavitve serije B v strukturnih metrikah in zagonih
+- `transpile_run.py` je postavitve serije B izbral iz kalibracije `FakeMarrakesh`
+  (npr. kubiti 12, 13, 14 za Toffolija), `simulate.py` in `hardware.py` pa iz kalibracije
+  `ibm_marrakesh` 19. 11. 2026 ob 8.37 (kubiti 20, 21, 22).
+- Število dvokubitnih vrat v `structural.csv` se je zato v seriji B pri 63 od 160
+  kombinacij razlikovalo od vezij, ki so tekla na šumnem modelu in procesorju.
+  Serija A je bila pravilna (enaka v vseh 160 kombinacijah).
+- Rešitev: `transpile_run.py` ima možnost `--layouts-B`, ki prebere postavitve iz datoteke.
+  Ponoven zagon z `results/simulate/layouts_B_ibm_marrakesh.json` da v obeh serijah
+  enako število dvokubitnih vrat kot vezja, pognana na `ibm_marrakesh`.
+
+## 21. 11. 2026 – povprečje sprememb čez vezja
+- `analyze.py` je povprečno spremembo števila vrat (vrstica "povprecje" v tabeli 3)
+  računal kot povprečje odstotkov posameznih vezij (28,6 %).
+- V Metodah je določeno, da najprej povprečimo števila vrat, nato izračunamo spremembo
+  (26,8 %). Kodo smo popravili, da sledi Metodam. Pri P_pravilno je rezultat enak.

@@ -20,6 +20,8 @@ Izhodne datoteke v results/transpile_run/:
 Zagon:
     python src/transpile_run.py                      # FakeMarrakesh
     python src/transpile_run.py --backend ibm_fez    # pravi backend
+    # postavitve B kot pri zagonih na ibm_marrakesh (tako so nastali rezultati v poročilu):
+    python src/transpile_run.py --layouts-B results/simulate/layouts_B_ibm_marrakesh.json
 Prevajanje za pravi backend ne porabi časa kvantnega procesorja, potrebuje pa shranjen IBM račun (save_account).
 """
 
@@ -333,7 +335,7 @@ def write_passes(backend, path, diff_path):
   GLAVNA ZANKA:
 1. preberi ime procesorja iz ukazne vrstice
 2. zapiši passes.txt
-3. za vsako vezje izberi postavitev B → layouts_B.json
+3. za vsako vezje izberi postavitev B (ali jo preberi iz --layouts-B) → layouts_B.json
 4. za vsako vezje:
        dodaj vrstico "pred"
        za serijo A in B:
@@ -348,6 +350,11 @@ def main():
     # ime procesorja lahko podamo v ukazni vrstici (--backend ...)
     parser = argparse.ArgumentParser()
     parser.add_argument("--backend", default="fake_marrakesh")
+    # Postavitve za serijo B lahko preberemo iz datoteke, npr. tiste, ki sta jih na pravem procesorju
+    # uporabila simulate.py in hardware.py (results/simulate/layouts_B_ibm_marrakesh.json).
+    # Tako so strukturne metrike serije B izračunane za iste kubite kot zagoni.
+    parser.add_argument("--layouts-B", default=None,
+                        help="JSON s ključem 'layouts' ({vezje: [fizični kubiti]}); brez tega jih izberemo sami")
     args = parser.parse_args()
 
     out = RESULTS_TRANSPILE
@@ -359,12 +366,22 @@ def main():
     write_passes(backend, out / "passes.txt", out / "passes_diff.txt")
 
     # 2. postavitve za serijo B (enkrat na vezje). Shranimo jih v JSON, da simulate.py uporabi iste kubite.
-    layouts_B = {}
-    for name in CIRCUITS:
-        n = len(inputs(name)[0])
-        layouts_B[name] = choose_layout_B(backend, n)
+    layouts_doc = {"backend": backend.name}
+    if args.layouts_B:
+        src = json.loads(Path(args.layouts_B).read_text(encoding="utf-8"))
+        layouts_B = {name: src["layouts"][name] for name in CIRCUITS}
+        # zapišemo, od kod so postavitve (procesor in kalibracija, iz katere jih je izbral choose_layout_B)
+        layouts_doc["vir"] = {"datoteka": Path(args.layouts_B).name,
+                              "procesor": src.get("backend"), "kalibracija": src.get("kalibracija")}
+        print(f"Postavitve B iz {args.layouts_B}")
+    else:
+        layouts_B = {}
+        for name in CIRCUITS:
+            n = len(inputs(name)[0])
+            layouts_B[name] = choose_layout_B(backend, n)
+    layouts_doc["layouts"] = layouts_B
     with open(out / "layouts_B.json", "w", encoding="utf-8") as f:
-        json.dump({"backend": backend.name, "layouts": layouts_B}, f, indent=2)
+        json.dump(layouts_doc, f, indent=2)
 
     # 3. prevajanje vseh kombinacij; vsaka kombinacija je ena vrstica (slovar),
     # na koncu iz seznama vrstic naredimo tabelo

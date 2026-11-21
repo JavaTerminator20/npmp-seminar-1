@@ -14,15 +14,12 @@ Ali Javadi-Abhari et~al.
 {IBM Quantum}.
 \newblock Processor types.
 \newblock IBM Quantum Documentation, 2026{\natexlab{a}}.
-\newblock URL \url{https://quantum.cloud.ibm.com/docs/en/guides/processor-types}.
+\newblock URL
+  \url{https://quantum.cloud.ibm.com/docs/en/guides/processor-types}.
 \newblock Dostopano 20.~11.~2026.
 
-\bibitem[Mraz(2026)]{reversible:mraz}
-Miha Mraz.
-\newblock Reverzibilno procesiranje.
-\newblock Prosojnice predavanj pri predmetu Nekonvencionalne platforme in metode procesiranja, Fakulteta za računalništvo in informatiko, Univerza v Ljubljani, 2026.
-
-\bibitem[Cuccaro et~al.(2004)Cuccaro, Draper, Kutin, and Moulton]{g10:cuccaro2004}
+\bibitem[Cuccaro et~al.(2004)Cuccaro, Draper, Kutin, and
+  Moulton]{g10:cuccaro2004}
 Steven~A. Cuccaro, Thomas~G. Draper, Samuel~A. Kutin, and David~Petrie Moulton.
 \newblock A new quantum ripple-carry addition circuit, 2004.
 \newblock URL \url{https://arxiv.org/abs/quant-ph/0410184}.
@@ -31,20 +28,30 @@ Steven~A. Cuccaro, Thomas~G. Draper, Samuel~A. Kutin, and David~Petrie Moulton.
 {IBM Quantum}.
 \newblock Transpiler stages.
 \newblock IBM Quantum Documentation, 2026{\natexlab{b}}.
-\newblock URL \url{https://quantum.cloud.ibm.com/docs/en/guides/transpiler-stages}.
+\newblock URL
+  \url{https://quantum.cloud.ibm.com/docs/en/guides/transpiler-stages}.
 \newblock Dostopano 18.~11.~2026.
 
 \bibitem[Li et~al.(2019)Li, Ding, and Xie]{g10:li2019sabre}
 Gushu Li, Yufei Ding, and Yuan Xie.
 \newblock Tackling the qubit mapping problem for {NISQ}-era quantum devices.
-\newblock In \emph{Proceedings of the Twenty-Fourth International Conference on Architectural Support for Programming Languages and Operating Systems (ASPLOS '19)}, pages 1001--1014. ACM, 2019.
+\newblock In \emph{Proceedings of the Twenty-Fourth International Conference on
+  Architectural Support for Programming Languages and Operating Systems (ASPLOS
+  '19)}, pages 1001--1014. ACM, 2019.
 \newblock \doi{10.1145/3297858.3304023}.
 
 \bibitem[{IBM Quantum}(2026{\natexlab{c}})]{g10:qiskit_optimization}
 {IBM Quantum}.
 \newblock Set transpiler optimization level.
 \newblock IBM Quantum Documentation, 2026{\natexlab{c}}.
-\newblock URL \url{https://quantum.cloud.ibm.com/docs/en/guides/set-optimization}.
+\newblock URL
+  \url{https://quantum.cloud.ibm.com/docs/en/guides/set-optimization}.
 \newblock Dostopano 11.~11.~2026.
+
+\bibitem[Nielsen and Chuang(2010)]{nielsen2010}
+Michael~A. Nielsen and Isaac~L. Chuang.
+\newblock \emph{Quantum Computation and Quantum Information}.
+\newblock Cambridge University Press, 10th anniversary edition, 2010.
+\newblock \doi{10.1017/CBO9780511976667}.
 
 \end{thebibliography}

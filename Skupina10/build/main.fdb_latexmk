@@ -1,15 +1,15 @@
 # Fdb version 4
-["bibtex build/main"] 1795343350.1261 "build/main.aux" "build/main.bbl" "build/main" 1795343397.78476 0
+["bibtex build/main"] 1795343350.1261 "build/main.aux" "build/main.bbl" "build/main" 1795378359.19999 0
   "./references.bib" 1795341759.86586 2982 7cbd59eec31601e29b6fcc83c12e7d67 ""
   "/usr/share/texlive/texmf-dist/bibtex/bst/natbib/unsrtnat.bst" 1233624470 24550 a41a6405f4de768c43e871d9fbce2bc8 ""
-  "build/main.aux" 1795343397.51851 8461 ca7cf415f7fa69494ac85eaadfbcf05e "pdflatex"
+  "build/main.aux" 1795378358.9859 8461 ca7cf415f7fa69494ac85eaadfbcf05e "pdflatex"
   (generated)
   "build/main.bbl"
   "build/main.blg"
   (rewritten before read)
-["pdflatex"] 1795343396.52308 "/mnt/shared/FRI/4. letnik/NPMP/vaje/seminar1/githubRepo/Skupina10/main.tex" "main.pdf" "main" 1795343397.785 0
+["pdflatex"] 1795378357.98441 "/mnt/shared/FRI/4. letnik/NPMP/vaje/seminar1/githubRepo/Skupina10/main.tex" "main.pdf" "main" 1795378359.20021 0
   "/etc/texmf/web2c/texmf.cnf" 1793561383.98094 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/mnt/shared/FRI/4. letnik/NPMP/vaje/seminar1/githubRepo/Skupina10/main.tex" 1795343396.32373 30527 79dc028552f44b56de8b2492a2100001 ""
+  "/mnt/shared/FRI/4. letnik/NPMP/vaje/seminar1/githubRepo/Skupina10/main.tex" 1795378357.80979 30273 d70011a7ea5ef114e1e5128dd7190d3b ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/courier/pcrr8r.tfm" 1136768653 1292 bd42be2f344128bff6d35d98474adfe3 ""
@@ -256,11 +256,11 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1769369718 41603 27f93b3067076450172040dcd57ca8b3 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1793561402 5541477 3118940318599480888143717dd32d64 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1793561453 3639779 82b6492aa95233aea60862e33821d5fe ""
-  "build/main.aux" 1795343397.51851 8461 ca7cf415f7fa69494ac85eaadfbcf05e "pdflatex"
+  "build/main.aux" 1795378358.9859 8461 ca7cf415f7fa69494ac85eaadfbcf05e "pdflatex"
   "build/main.bbl" 1795343350.20908 2466 d9495b58a2bd043362553ea3afe417e9 "bibtex build/main"
-  "build/main.out" 1795343397.51942 2719 b8a4fb581002ef0e4bacf9e70c17c67c "pdflatex"
+  "build/main.out" 1795378358.98662 2719 b8a4fb581002ef0e4bacf9e70c17c67c "pdflatex"
   "img/graf3_vrata_proti_P_v3.pdf" 1795275463.09593 24570 ac561de7a6c8e3900014a3bbb0f17896 ""
-  "main.tex" 1795343396.32373 30527 79dc028552f44b56de8b2492a2100001 ""
+  "main.tex" 1795378357.80979 30273 d70011a7ea5ef114e1e5128dd7190d3b ""
   "svmult.cls" 1794397696.82985 81406 83350e990a513f868a8e73ba01be0175 ""
   (generated)
   "build/main.aux"

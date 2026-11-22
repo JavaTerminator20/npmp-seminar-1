@@ -1,4 +1,4 @@
-\begin{thebibliography}{9}
+\begin{thebibliography}{8}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -51,12 +51,5 @@ Gushu Li, Yufei Ding, and Yuan Xie.
 \newblock IBM Quantum Documentation, 2026{\natexlab{b}}.
 \newblock URL \url{https://quantum.cloud.ibm.com/docs/en/guides/set-optimization}.
 \newblock Dostopano 11.~11.~2026.
-
-\bibitem[{IBM Quantum}(2026{\natexlab{c}})]{g10:ibm_processor_types}
-{IBM Quantum}.
-\newblock Processor types.
-\newblock IBM Quantum Documentation, 2026{\natexlab{c}}.
-\newblock URL \url{https://quantum.cloud.ibm.com/docs/en/guides/processor-types}.
-\newblock Dostopano 20.~11.~2026.
 
 \end{thebibliography}

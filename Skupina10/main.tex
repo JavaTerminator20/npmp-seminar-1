@@ -101,19 +101,15 @@ Fredkinova vrata zamenjata dva bita,
 Vsaka od obeh funkcij sama tvori
 poln funkcijski nabor~\cite{reversible:mraz}.
 
-Kvantna vrata so unitarna in zato reverzibilna~\cite{nielsen2010}.
 Vsako klasično vezje lahko zamenjamo z reverzibilnim,
-zgrajenim iz Toffolijevih vrat.
-Ta so tudi veljavna kvantna vrata,
-saj bazna stanja preslikajo enako kot klasična,
-npr.\ stanje $\ket{110}$ v $\ket{111}$~\cite{nielsen2010}.
+zgrajenim iz Toffolijevih vrat~\cite{nielsen2010}.
 Iz Toffolijevih vrat in vrat CNOT
-je zgrajen tudi Cuccarov kvantni seštevalnik~\cite{g10:cuccaro2004}.
+je zgrajen npr. Cuccarov kvantni seštevalnik~\cite{g10:cuccaro2004}.
 Če na vhod reverzibilnega vezja damo bazno stanje,
 je tudi izhod eno samo bazno stanje.
 Brez šuma je torej izhod natanko določen
 in ga poznamo iz pravilnostne tabele.
-Zato smo taka vezja izbrali za merjenje vpliva šuma.
+Vsako odstopanje od njega je posledica šuma.
 
 Današnji kvantni procesorji so namreč šumni.
 Preskill jih uvršča v obdobje NISQ
@@ -123,7 +119,7 @@ tudi na najboljših procesorjih nad 0,1~\%,
 pogosto pa precej večja~\cite{preskill2018}.
 Že ena napaka kjerkoli v vezju lahko pokvari rezultat.
 Šum zato omejuje velikost vezij,
-ki jih lahko zanesljivo izvedemo~\cite{preskill2018}.
+ki jih lahko zanesljivo izvedemo.
 Poleg tega kubiti niso povezani vsak z vsakim.
 Dvokubitna vrata lahko neposredno izvedemo
 le na povezanih kubitih~\cite{g10:qiskit_transpiler_stages}.
@@ -208,8 +204,7 @@ in na kvantnem procesorju \texttt{ibm\_marrakesh}.
 
 Procesor smo uporabljali z brezplačnim računom IBM Quantum
 (angl.\ Open Plan).
-Spada v družino Heron r2 in ima 156 kubitov
-v mreži \enquote{heavy-hex}~\cite{g10:ibm_processor_types}.
+Spada v družino Heron r2 in ima 156 kubitov.
 Vsak kubit je povezan z največ tremi sosedi.
 Osnovna vrata so CZ, RZ, SX in X,
 edina dvokubitna vrata so torej CZ.
@@ -755,26 +750,18 @@ ne bi kaznovala nobene ravni.
 Na procesorju to pri seštevalnikih ni uspelo.
 Cuccaro v seriji B doseže le 26,1 do 30,6~\%,
 v seriji A na ravneh 1--3 pa 60,4 do 62,4~\%.
-Slabši je celo od ravni 0 v seriji A (56,6~\%).
 Polni seštevalnik v seriji B doseže 75,6 do 78,8~\%,
 v seriji A na ravneh 1--3 pa 85,6 do 89,6~\%.
-Po našem mnenju podatki iz kalibracije
-ne opišejo dejanskega stanja teh kubitov
-(razdelek~\ref{g10:sec:razprava}).
 
-Postavitve serije B smo sprva izbrali iz dveh virov.
-Za strukturne metrike smo uporabili napake
-iz posnetka \texttt{FakeMarrakesh},
-za zagone pa kalibracijo procesorja \texttt{ibm\_marrakesh}.
-Napake v virih se razlikujejo, zato je postopek
-izbral druge kubite, npr.\ za Toffolija 12, 13 in 14
-namesto 20, 21 in 22.
-Število dvokubitnih vrat v strukturnih metrikah
-se je zato pri 63 od 160 kombinacij
-vezja, ravni in semena razlikovalo od vezij,
-ki so dejansko tekla.
-Napako smo popravili tako, da strukturne metrike
-uporabijo iste postavitve kot zagoni.
+Postavitve serije B smo sprva izbrali iz dveh različnih
+kalibracij. Za strukturne metrike smo uporabili posnetek
+\texttt{FakeMarrakesh}, za zagone vezij pa kalibracijo
+procesorja \texttt{ibm\_marrakesh}. To je privedlo do tega,
+da je algoritem za izbiro kubitov izbral različne kubite.
+To je povzročilo, da so se izmerjene strukturne metrike
+razlikovale od dejanskih metrik vezij, na katerih smo izvedli zagone.
+Napako smo popravili tako, da smo v obeh primerih uporabili isto
+kalibracijo.
 
 
 \section{Zaključek}
@@ -799,6 +786,10 @@ in ob različnih kalibracijah.
 
 \section*{Izjava o uporabi generativne umetne inteligence}
 
+Pri delu smo uporabili orodje Claude Code podjetja Anthropic.
+Z njim smo si pomagali pri pisanju kode,
+iskanju virov, lektoriranju besedila
+in pravilnem citiranju virov.
 
 \bibliographystyle{unsrtnat}   % izpiše tudi DOI in URL
 \bibliography{references}
